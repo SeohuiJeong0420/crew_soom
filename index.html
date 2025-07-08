@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>🌊 침수 예측 모니터링 대시보드</title>
+        <meta charset="utf-8">
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+            .container { max-width: 1200px; margin: 0 auto; }
+            .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                     color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+            .card { background: white; padding: 20px; border-radius: 10px; 
+                   box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+            .risk-meter { text-align: center; padding: 30px; font-size: 24px; border-radius: 10px; }
+            .risk-0 { background: #4CAF50; color: white; }
+            .risk-1 { background: #FFEB3B; color: black; }
+            .risk-2 { background: #FF9800; color: white; }
+            .risk-3 { background: #F44336; color: white; }
+            .risk-4 { background: #9C27B0; color: white; }
+            .input-group { margin: 10px 0; }
+            .input-group label { display: inline-block; width: 150px; font-weight: bold; }
+            .input-group input, .input-group select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 120px; }
+            .btn { background: #667eea; color: white; padding: 12px 24px; 
+                  border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+            .btn:hover { background: #5a6fd8; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+            .status { padding: 10px; border-left: 4px solid #667eea; background: #f8f9ff; border-radius: 5px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🌊 실시간 침수 위험 예측 시스템</h1>
+                <p>Phase 8: 머신러닝 기반 침수 예측 서비스 (AUC 1.0 성능)</p>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <h2>📊 실시간 예측</h2>
+                    <div class="input-group">
+                        <label>강수량 (mm):</label>
+                        <input type="number" id="precipitation" value="0" min="0" max="200">
+                    </div>
+                    <div class="input-group">
+                        <label>습도 (%):</label>
+                        <input type="number" id="humidity" value="60" min="0" max="100">
+                    </div>
+                    <div class="input-group">
+                        <label>온도 (°C):</label>
+                        <input type="number" id="temperature" value="20" min="-20" max="40">
+                    </div>
+                    <div class="input-group">
+                        <label>3일 누적 강수량:</label>
+                        <input type="number" id="precip_3d" value="0" min="0" max="500">
+                    </div>
+                    <div class="input-group">
+                        <label>계절:</label>
+                        <select id="season">
+                            <option value="rainy">장마철</option>
+                            <option value="dry">건조기</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="predictRisk()">🔍 위험도 예측</button>
+                </div>
+                
+                <div class="card">
+                    <h2>🎯 예측 결과</h2>
+                    <div id="risk-display" class="risk-meter">
+                        예측을 시작하세요
+                    </div>
+                    <div id="recommendations" class="status">
+                        권장 행동이 여기에 표시됩니다
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>📈 모델 성능 정보</h2>
+                <div class="grid">
+                    <div>
+                        <h3>🏆 Phase 7 핵심 성과</h3>
+                        <ul>
+                            <li>Random Forest & XGBoost: AUC 1.0</li>
+                            <li>Phase 4 파생 변수: 48.9% 기여도</li>
+                            <li>drainage_overflow: 9.28% 중요도</li>
+                            <li>완벽한 테스트셋 성능</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>🔍 주요 발견</h3>
+                        <ul>
+                            <li>강수량 0-12mm에서도 침수 가능</li>
+                            <li>누적 효과가 단일 강수량보다 중요</li>
+                            <li>배수 한계 모델의 정확성 검증</li>
+                            <li>습도-강수량 복합 지수 효과적</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🧪 테스트 시나리오</h2>
+                <div class="grid">
+                    <button class="btn" onclick="testScenario('calm')">평상시 (0mm)</button>
+                    <button class="btn" onclick="testScenario('light')">소량 강우 (15mm)</button>
+                    <button class="btn" onclick="testScenario('medium')">중간 강우 (35mm)</button>
+                    <button class="btn" onclick="testScenario('heavy')">집중호우 (80mm)</button>
+                    <button class="btn" onclick="testScenario('extreme')">2022년급 (130mm)</button>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            // 테스트 시나리오 데이터
+            const scenarios = {
+                'calm': {precipitation: 0, humidity: 60, avg_temp: 20, precip_sum_3d: 0, season_type: 'dry'},
+                'light': {precipitation: 15, humidity: 75, avg_temp: 22, precip_sum_3d: 25, season_type: 'rainy'},
+                'medium': {precipitation: 35, humidity: 85, avg_temp: 24, precip_sum_3d: 60, season_type: 'rainy'},
+                'heavy': {precipitation: 80, humidity: 95, avg_temp: 26, precip_sum_3d: 120, season_type: 'rainy'},
+                'extreme': {precipitation: 130, humidity: 96, avg_temp: 26, precip_sum_3d: 200, season_type: 'rainy'}
+            };
+            
+            function testScenario(scenarioName) {
+                const scenario = scenarios[scenarioName];
+                document.getElementById('precipitation').value = scenario.precipitation;
+                document.getElementById('humidity').value = scenario.humidity;
+                document.getElementById('temperature').value = scenario.avg_temp;
+                document.getElementById('precip_3d').value = scenario.precip_sum_3d;
+                document.getElementById('season').value = scenario.season_type;
+                predictRisk();
+            }
+            
+            async function predictRisk() {
+                const data = {
+                    precipitation: parseFloat(document.getElementById('precipitation').value),
+                    humidity: parseFloat(document.getElementById('humidity').value),
+                    avg_temp: parseFloat(document.getElementById('temperature').value),
+                    precip_sum_3d: parseFloat(document.getElementById('precip_3d').value),
+                    season_type: document.getElementById('season').value
+                };
+                
+                try {
+                    const response = await fetch('/predict', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    const riskDisplay = document.getElementById('risk-display');
+                    riskDisplay.className = `risk-meter risk-${result.risk_level}`;
+                    riskDisplay.innerHTML = `
+                        ${result.risk_color} ${result.risk_name}<br>
+                        <div style="font-size: 36px; margin: 10px 0;">${result.risk_score}점</div>
+                        ${result.action}
+                    `;
+                    
+                    const recommendations = document.getElementById('recommendations');
+                    recommendations.innerHTML = `
+                        <h4>📋 권장 행동:</h4>
+                        <ul>
+                            ${result.recommendations.map(r => `<li>${r}</li>`).join('')}
+                        </ul>
+                        <p><small>예측 시간: ${new Date(result.prediction_time).toLocaleString()}</small></p>
+                    `;
+                    
+                } catch (error) {
+                    alert('예측 오류: ' + error.message);
+                }
+            }
+            
+            // 초기 예측
+            predictRisk();
+        </script>
+    </body>
+    </html>
