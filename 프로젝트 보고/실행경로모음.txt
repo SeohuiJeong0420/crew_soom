@@ -1,0 +1,28 @@
+로또프로젝트2506
+cd C:\ai_x\ideanote\soloproject\funproject
+python quick_start.py
+
+학원팀프로젝트2506
+cd C:\ai_x\ideanote\250617_1팀프로젝트
+25project01\Scripts\activate
+python flood_service.py
+
+제미나이
+kjh88040111
+
+
+구글 팀프로젝트 공용 ID(챗gpt)
+ID : mbcproject0902@gmail.com
+PASS : dpaqlTl1!
+(엠비씨1!)
+
+CREW_SOOM
+# 1. 프로젝트 폴더로 이동
+cd C:\your\project\path\crew_soom
+# 2. 가상환경 생성
+python -m venv venv
+# 3. 가상환경 활성화
+venv\Scripts\activate
+# 4. 가상환경 활성화 확인 (명령 프롬프트 앞에 (venv) 표시)
+(venv) C:\your\project\path\crew_soom>
+# 5. python setup.py
