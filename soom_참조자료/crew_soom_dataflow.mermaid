@@ -1,0 +1,26 @@
+graph TD
+    A[4개 기상청 API] --> B[multi_weather_api.py]
+    B --> C[데이터 통합 및 품질 점수]
+    C --> D[data_loader.py]
+    D --> E[preprocessor.py]
+    E --> F[trainer.py]
+    F --> G[ML 모델 훈련]
+    G --> H[models/ 폴더에 저장]
+    
+    I[사용자 입력] --> J[web_app.py]
+    J --> K[실시간 예측]
+    H --> K
+    K --> L[risk-meter 표시]
+    
+    M[자동 업데이트 스레드] --> N[1시간마다 API 호출]
+    N --> O[CSV 파일 업데이트]
+    O --> P[시각화 업데이트]
+    
+    Q[dashboard.html] --> R[사용자 인터페이스]
+    R --> S[예측 요청]
+    S --> T[Flask API]
+    T --> U[결과 반환]
+    
+    V[visualizer.py] --> W[차트 생성]
+    W --> X[Base64 이미지]
+    X --> Y[웹 페이지 표시]
