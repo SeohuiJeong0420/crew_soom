@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .register-box {
+      max-width: 400px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>👤 회원가입</h1>
+  </div>
+
+  <div class="register-box">
+    <div class="input-group">
+      <label for="username">아이디</label>
+      <input type="text" id="username" />
+    </div>
+    <div class="input-group">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" />
+    </div>
+    <button class="btn btn-info" onclick="register()">가입하기</button>
+  </div>
+
+  <script>
+    async function register() {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value
+        })
+      });
+      const result = await res.json();
+      if (result.success) {
+        alert('✅ 회원가입 성공! 로그인 페이지로 이동합니다.');
+        location.href = '/login';
+      } else {
+        alert('❌ ' + result.message);
+      }
+    }
+  </script>
+</body>
+</html>
