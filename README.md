@@ -1,10 +1,9 @@
 # crew_soom
 
-# 프로젝트명
 
-## 1st Team Project
+# 1st Team Project
 
-프로젝트 명 : 장마철 침수 위험 예측 시스템
+## 프로젝트 명 : 장마철 침수 위험 예측 시스템
 
 
 인원 : 4명
