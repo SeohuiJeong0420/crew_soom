@@ -1,7 +1,9 @@
 # crew_soom
-
+---
 
 # 1st Team Project
+
+---
 
 ## 프로젝트 명 : 장마철 침수 위험 예측 시스템
 
@@ -18,6 +20,7 @@
 
    + micro Web Framework : flask
 
+---
 
 ## 프로젝트 소개 : 
    
