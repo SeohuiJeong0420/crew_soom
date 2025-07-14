@@ -1,4 +1,4 @@
-# crew_soom
+# CREW_SOOM
 ---
 
 # 1st Team Project
