@@ -5,48 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CREW_SOOM - 실시간 침수 위험 지도</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!--<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     
     <style>
+        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+        /* * * * * * * * * * Header nav 시작 * * * * * * * * * */
         .header {
             background: var(--white);
             box-shadow: var(--shadow-sm);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(44, 95, 247, 0.08);
         }
 
         .navbar {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             height: 80px;
         }
 
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand .logo a{
+            text-decoration: none;
+        }
+
         .nav-brand h1 {
-            background: var(--primary-gradient);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-family: 'NanumSquareExtraBold';
             margin: 0;
+            font-weight: 700;
+        }
+
+        .nav-brand .subtitle {
+            font-size: 0.875rem;
+            color: var(--medium-gray);
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: bold;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 18px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
         }
 
         .nav-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: var(--white);
+        }
+
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: var(--border-radius-lg);
+        }
+        /* * * * * * * * * * Header nav 끝* * * * * * * * * */
 
         .main-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 80px 20px;
         }
 
         .page-header {
@@ -55,23 +150,30 @@
         }
 
         .page-header h1 {
-            font-size: 2.5rem;
+            font-size: 42px;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            /*-webkit-text-fill-color: transparent;*/
             background-clip: text;
             margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 1.6;
         }
 
         .page-header p {
-            color: var(--medium-gray);
+            color: #6b7280;
             font-size: 1.1rem;
+        }
+
+        .page-header .highlight {
+            color: var(--primary-color);
         }
 
         .map-container {
             background: var(--white);
             border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             overflow: hidden;
             margin-bottom: 30px;
         }
@@ -83,11 +185,16 @@
 
         .map-controls {
             padding: 20px;
-            background: var(--light-gray);
+            background: var(--white);
             display: flex;
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
+        }
+
+        .map-legend-information{
+            display: flex;
+            justify-content: space-between;
         }
 
         .legend {
@@ -132,6 +239,7 @@
 
         .status-card {
             background: var(--white);
+            border: 1px solid #e1e5ec;
             border-radius: var(--border-radius);
             padding: 20px;
             box-shadow: var(--shadow-sm);
@@ -141,6 +249,13 @@
         .status-card h3 {
             color: var(--primary-color);
             margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .status-card ul{
+            text-align: left;
+            list-style: none; 
+            padding: 0;
         }
 
         .status-value {
@@ -186,6 +301,57 @@
             color: var(--medium-gray);
         }
 
+        /* * * * * * * * * * footer 시작 * * * * * * * * * */
+        .footer-section {
+            background-color: var(--black);
+            padding: 80px 0 40px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 상단 정보 섹션 */
+        .footer-info {
+            margin-bottom: 60px;
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #93959C;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #666;
+        }
+
+        .footer-details p{
+            color:#93959C
+        }
+
+        .copyright {
+            color: #999;
+            font-size: 13px;
+        }
+        /* * * * * * * * * * footer 끝 * * * * * * * * * */
+
         /* 반응형 */
         @media (max-width: 768px) {
             .navbar {
@@ -223,56 +389,35 @@
     </style>
 </head>
 <body>
-    <!-- 네비게이션 -->
+    <!-- Header 시작 -->
     <header class="header">
         <nav class="navbar">
             <div class="nav-brand">
-                <h1>🌊 CREW_SOOM</h1>
+                <div class="logo">
+                    <a href="/" class="nav-link"><h1>SOOM</h1></a>
+                </div>
             </div>
             
+            <ul class="nav-menu">
+                <li><a href="/#services" class="nav-link">AI 서비스</a></li>
+                <li><a href="/#about" class="nav-link">기술 소개</a></li>
+                <li><a href="/map" class="nav-link active">실시간 지도</a></li>
+                <li><a href="/news" class="nav-link">NEWS</a></li>
+            </ul>
+            
             <div class="nav-actions">
-                <a href="/" class="btn btn-outline">
-                    <i class="fas fa-home"></i> 홈으로
-                </a>
-                <a href="/login" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> 로그인
-                </a>
+                <a href="/login" class="btn btn-outline">로그인</a>
+                <button class="btn btn-primary" onclick="showRegister()">회원가입</button>
             </div>
         </nav>
     </header>
+    <!-- Header 끝 -->
 
     <main class="main-content">
         <!-- 페이지 헤더 -->
         <div class="page-header">
-            <h1>🗺️ 실시간 침수 위험 지도</h1>
-            <p>서울시 25개 구별 실시간 침수 위험도를 시각화하여 제공합니다</p>
-        </div>
-
-        <!-- 상태 카드 -->
-        <div class="status-cards">
-            <div class="status-card">
-                <h3>📊 평균 위험도</h3>
-                <div class="status-value" id="avg-risk">-</div>
-                <p>서울시 전체</p>
-            </div>
-            
-            <div class="status-card">
-                <h3>🚨 고위험 지역</h3>
-                <div class="status-value" id="high-risk-count">-</div>
-                <p>61점 이상 지역</p>
-            </div>
-            
-            <div class="status-card">
-                <h3>🎯 최고 위험 지역</h3>
-                <div class="status-value" id="max-risk-area">-</div>
-                <p>가장 주의가 필요한 구</p>
-            </div>
-            
-            <div class="status-card">
-                <h3>🕐 마지막 업데이트</h3>
-                <div class="status-value" id="last-update" style="font-size: 1.2rem;">-</div>
-                <p>실시간 갱신</p>
-            </div>
+            <h1>실시간 <span class="highlight">침수</span> 위험 지도</h1>
+            <p>서울시 25개 구별 실시간 침수 위험도를 시각화하여 제공합니다.</p>
         </div>
 
         <!-- 지도 컨테이너 -->
@@ -307,45 +452,98 @@
             </div>
         </div>
 
-        <!-- 범례 -->
-        <div class="legend">
-            <h3>📈 위험도 색상 등급</h3>
+        <!-- 상태 카드 -->
+        <div class="status-cards">
+            <div class="status-card">
+                <h3>평균 위험도</h3>
+                <div class="status-value" id="avg-risk">-</div>
+                <p>서울시 전체</p>
+            </div>
+            
+            <div class="status-card">
+                <h3>고위험 지역</h3>
+                <div class="status-value" id="high-risk-count">-</div>
+                <p>61점 이상 지역</p>
+            </div>
+            
+            <div class="status-card">
+                <h3>최고 위험 지역</h3>
+                <div class="status-value" id="max-risk-area">-</div>
+                <p>가장 주의가 필요한 구</p>
+            </div>
+            
+            <div class="status-card">
+                <h3>마지막 업데이트</h3>
+                <div class="status-value" id="last-update" style="font-size: 1.2rem;">-</div>
+                <p>실시간 갱신</p>
+            </div>
+        </div>
+
+        <div class="map-legend-information">
+            <!-- 범례 -->
+        <div class="status-card">
+            <h3>위험도 색상 등급</h3>
             <div class="legend-items">
                 <div class="legend-item">
                     <div class="legend-color" style="background: #4CAF50;"></div>
-                    <span><strong>🟢 매우 낮음 (0-20점):</strong> 정상 업무</span>
+                    <span><strong>매우 낮음 (0-20점) :</strong> 정상 업무</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #FFEB3B;"></div>
-                    <span><strong>🟡 낮음 (21-40점):</strong> 상황 주시</span>
+                    <span><strong>낮음 (21-40점) :</strong> 상황 주시</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #FF9800;"></div>
-                    <span><strong>🟠 보통 (41-60점):</strong> 주의 준비</span>
+                    <span><strong>보통 (41-60점) :</strong> 주의 준비</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #F44336;"></div>
-                    <span><strong>🔴 높음 (61-80점):</strong> 대비 조치</span>
+                    <span><strong>높음 (61-80점) :</strong> 대비 조치</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #9C27B0;"></div>
-                    <span><strong>🟣 매우 높음 (81-100점):</strong> 즉시 대응</span>
+                    <span><strong>매우 높음 (81-100점) :</strong> 즉시 대응</span>
                 </div>
             </div>
         </div>
 
         <!-- 추가 정보 -->
-        <div class="status-card" style="text-align: left;">
-            <h3>ℹ️ 지도 정보</h3>
-            <ul style="list-style: none; padding: 0;">
-                <li style="margin-bottom: 10px;"><i class="fas fa-database" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>데이터 소스:</strong> 기상청 4개 API 통합</li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-clock" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>업데이트 주기:</strong> 실시간 (10분마다)</li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-map-marked-alt" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>적용 지역:</strong> 서울시 25개 구</li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-brain" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>예측 모델:</strong> 4가지 AI 모델 앙상블</li>
-                <li><i class="fas fa-shield-alt" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>정확도:</strong> 95.2% (실제 침수 사례 기반)</li>
+        <div class="status-card">
+            <h3>지도 정보</h3>
+            <ul>
+                <li style="margin-bottom: 10px;"><i class="fas fa-database" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>데이터 소스 :</strong> 기상청 4개 API 통합</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-clock" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>업데이트 주기 :</strong> 실시간 (10분마다)</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-map-marked-alt" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>적용 지역 :</strong> 서울시 25개 구</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-brain" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>예측 모델 :</strong> 4가지 AI 모델 앙상블</li>
+                <li><i class="fas fa-shield-alt" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>정확도 :</strong> 95.2% (실제 침수 사례 기반)</li>
             </ul>
         </div>
+    </div>
     </main>
+
+    <!-- footer 시작 -->
+    <footer class="footer-section">
+        <div class="footer-container">
+            <!-- 상단 정보 -->
+            <div class="footer-info">
+                <!-- 링크 및 회사 정보 -->
+                <div class="footer-left">
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">이용약관</a>
+                        <a href="#" class="footer-link">개인정보 처리방침</a>
+                    </div>
+                    
+                    <div class="footer-details">
+                        <p>(08754) 서울 관악구 신림로 340 르네상스복합쇼핑몰 6층</p>
+                        <p>대표이사 : SOOM &nbsp;&nbsp;&nbsp; 사업자등록번호 : 123-45-67890 &nbsp;&nbsp;&nbsp; 통신판매신고번호 : 제 123-45-67-89112호</p>
+                        <br>
+                        <p>Copyright © SOOM I All Rights Reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer 끝 -->
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
