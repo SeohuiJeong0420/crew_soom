@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOOM - 대한민국 NO.1 AI 침수 예측 플랫폼</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* * * * * * * * * * Header nav 시작 * * * * * * * * * */
+        .header {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(44, 95, 247, 0.08);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand .logo a{
+            text-decoration: none;
+        }
+
+        .nav-brand h1 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            font-family: 'NanumSquareExtraBold';
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .nav-brand .subtitle {
+            font-size: 0.875rem;
+            color: var(--medium-gray);
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: bold;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 18px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: var(--white);
+        }
+        /* * * * * * * * * * Header nav 끝* * * * * * * * * */
+
+        /* 상단 네비게이션 - 원본과 동일한 스타일 */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* 상단 네비게이션 title */
+        .page-header{
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            /*-webkit-text-fill-color: transparent;*/
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 1.6;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .page-header .highlight {
+            color: var(--primary-color);
+        }
+
+        .nav-btn {
+            background-color: #ffffff;
+            color: #666;
+            border: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background-color: #f5f5f5;
+            border-color: #d0d0d0;
+        }
+
+        .nav-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        /* 메인 배너 - 원본과 동일한 그라디언트 */
+        .main-banner {
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius-xl);
+            padding: 80px 60px;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .main-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, 50%);
+        }
+
+        .main-banner h1 {
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-banner p {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 시각화 섹션 */
+        .visualization-section {
+            margin-top: 60px;
+            padding: 0px 40px;
+            /*background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);*/
+        }
+
+        .visualization-title {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 0px;
+            text-align: center;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .chart {
+            /*width: 100%;
+            height: 250px;*/
+            background: white;
+            border-radius: var(--border-radius-lg);
+            /*display: flex;*/
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .chart img{
+            border-radius: var(--border-radius-lg);
+        }
+
+        /* 숨김 처리 */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header 시작 -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo">
+                    <a href="/" class="nav-link"><h1>SOOM</h1></a>
+                </div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="/#services" class="nav-link">AI 서비스</a></li>
+                <li><a href="/#about" class="nav-link">기술 소개</a></li>
+                <li><a href="/visualization" class="nav-link active">모델 연혁</a></li>
+                <li><a href="/map" class="nav-link">실시간 지도</a></li>
+                <li><a href="/news" class="nav-link">NEWS</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <a href="/login" class="btn btn-outline">로그인</a>
+                <button class="btn btn-primary" onclick="showRegister()">회원가입</button>
+            </div>
+        </nav>
+    </header>
+    <!-- Header 끝 -->
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1><span class="highlight">일별</span> 모델링 시각화</h1>
+            <p>서울시 25개 구별 실시간 침수 위험도를 일별로 시각화하여 제공합니다.</p>
+        </div>
+
+        <!-- 상단 네비게이션 -->
+        <nav class="nav-buttons">
+            <button class="nav-btn active" data-model="model1">RandomForest</button>
+            <button class="nav-btn" data-model="model2">XGBoost</button>
+            <button class="nav-btn" data-model="model3">LSTM+CNN</button>
+            <button class="nav-btn" data-model="model4">Transformer</button>
+            <!--
+            <button class="nav-btn" data-model="model5">모델5</button>
+            <button class="nav-btn" data-model="model6">모델6</button>
+            <button class="nav-btn" data-model="model7">모델7</button>
+            <button class="nav-btn" data-model="model8">모델8</button>-->
+        </nav>
+
+        <!-- 메인 배너 -->
+        <div class="main-banner">
+            <h1 id="banner-title">RandomForest</h1>
+            <p id="banner-description">RandomForest 모델은 임베딩 학습을 위한 정보 분석 및 예측 모델입니다.</p>
+        </div>
+
+        <!-- 시각화 섹션 -->
+        <section class="visualization-section" id="visualization-section">
+            <h2 class="visualization-title" id="visualization-title">RandomForest 성능 분석</h2>
+            
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart" id="performance-chart">
+                        <img src="static/images/hourly/시간별RF_컬럼별중요도.PNG" alt="시간별 성능 분석" style="width: 100%; padding: 15px;">
+                        <!--<canvas id="performanceCanvas" width="300" height="200"></canvas>-->
+                    </div>
+                    <h3 class="chart-title">시간별RF_컬럼별중요도</h3>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart" id="usage-chart">
+                        <canvas id="usageCanvas" width="300" height="200"></canvas>
+                    </div>
+                    <h3 class="chart-title">성능 지표</h3>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart" id="security-chart">
+                        <canvas id="securityCanvas" width="300" height="200"></canvas>
+                    </div>
+                    <h3 class="chart-title">성능 지표</h3>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart" id="speed-chart">
+                        <canvas id="speedCanvas" width="300" height="200"></canvas>
+                    </div>
+                    <h3 class="chart-title">성능 지표</h3>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+    </script>
+</body>
+</html>

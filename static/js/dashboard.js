@@ -19,27 +19,27 @@ const scenarios = {
     'calm': {
         precipitation: 0, humidity: 60, avg_temp: 20, 
         precip_sum_3d: 0, season_type: 'dry',
-        name: '평온한 날씨', icon: '😌', color: '#00c851'
+        name: '평온한 날씨', icon: '', color: '#00c851'
     },
     'light': {
         precipitation: 15, humidity: 75, avg_temp: 22, 
         precip_sum_3d: 25, season_type: 'rainy',
-        name: '약한 비', icon: '🌦️', color: '#ffbb33'
+        name: '약한 비', icon: '', color: '#ffbb33'
     },
     'medium': {
         precipitation: 35, humidity: 85, avg_temp: 24, 
         precip_sum_3d: 60, season_type: 'rainy',
-        name: '보통 비', icon: '🌧️', color: '#ff8a00'
+        name: '보통 비', icon: '', color: '#ff8a00'
     },
     'heavy': {
         precipitation: 80, humidity: 95, avg_temp: 26, 
         precip_sum_3d: 120, season_type: 'rainy',
-        name: '폭우', icon: '⛈️', color: '#ff4444'
+        name: '폭우', icon: '', color: '#ff4444'
     },
     'extreme': {
         precipitation: 130, humidity: 96, avg_temp: 26, 
         precip_sum_3d: 200, season_type: 'rainy',
-        name: '극한 폭우', icon: '🌊', color: '#9c27b0'
+        name: '극한 폭우', icon: '', color: '#9c27b0'
     }
 };
 
@@ -348,7 +348,7 @@ function updateSystemStatus(status) {
     if (status.today) {
         const todayEl = document.getElementById('today-date');
         if (todayEl) {
-            todayEl.textContent = `📅 ${status.today}`;
+            todayEl.textContent = ` ${status.today}`;
         }
         
         const predictionDateEl = document.getElementById('prediction-date');
@@ -519,7 +519,7 @@ async function predictRisk() {
     };
     
     try {
-        showGlobalLoading('🤖 AI 모델들이 위험도를 분석하고 있습니다...');
+        showGlobalLoading(' AI 모델들이 위험도를 분석하고 있습니다...');
         
         const result = await apiRequest('/api/predict_advanced', {
             method: 'POST',
@@ -532,13 +532,13 @@ async function predictRisk() {
             updateRecommendations(result.data.recommendations);
             showModelPredictions(result.data.model_predictions);
             
-            showNotification('✅ AI 예측 완료! 4가지 모델의 종합 분석 결과입니다.', 'success');
+            showNotification('AI 예측 완료! 4가지 모델의 종합 분석 결과입니다.', 'success');
         } else {
             throw new Error(result.error || '예측 실패');
         }
         
     } catch (error) {
-        showNotification('❌ 예측 오류: ' + error.message, 'error');
+        showNotification(' 예측 오류: ' + error.message, 'error');
         console.error('예측 오류:', error);
     } finally {
         hideGlobalLoading();
@@ -595,7 +595,7 @@ function showModelPredictions(predictions) {
     
     const modelContainer = document.querySelector('.model-predictions');
     if (modelContainer) {
-        let html = '<h4 style="color: #2c5ff7; margin-bottom: 12px; font-size: 1rem;">🤖 모델별 예측 결과</h4>';
+        let html = '<h4 style="color: #2c5ff7; margin-bottom: 12px; font-size: 1rem;"> 모델별 예측 결과</h4>';
         
         Object.entries(predictions).forEach(([modelName, data]) => {
             const score = Math.round(data.score || 0);
@@ -630,7 +630,7 @@ function updateRecommendations(recommendations) {
     
     if (recommendations && recommendations.length > 0) {
         recommendationsDiv.innerHTML = `
-            <h4>📋 AI 권장사항</h4>
+            <h4>AI 권장사항</h4>
             <ul>
                 ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
             </ul>
@@ -702,14 +702,14 @@ function testScenario(scenarioName) {
    ========================================== */
 
 async function loadData() {
-    showGlobalLoading('📊 실제 기상 데이터를 수집하고 있습니다...');
+    showGlobalLoading('실제 기상 데이터를 수집하고 있습니다...');
     try {
         const result = await apiRequest('/api/load_data', { method: 'POST' });
         
         if (result.success) {
             const data = result.data;
             showNotification(
-                `✅ ${data.message}\n📊 일자료: ${data.rows?.toLocaleString() || '0'}행\n🕐 시간자료: ${data.hourly_rows?.toLocaleString() || '0'}행`, 
+                ` ${data.message}\n 일자료: ${data.rows?.toLocaleString() || '0'}행\n 시간자료: ${data.hourly_rows?.toLocaleString() || '0'}행`, 
                 'success'
             );
             checkStatus();
@@ -717,21 +717,21 @@ async function loadData() {
             throw new Error(result.error);
         }
     } catch (error) {
-        showNotification('❌ 데이터 로드 오류: ' + error.message, 'error');
+        showNotification('데이터 로드 오류: ' + error.message, 'error');
     } finally {
         hideGlobalLoading();
     }
 }
 
 async function updateData() {
-    showGlobalLoading('🌐 실시간 API에서 최신 기상 데이터를 가져오고 있습니다...');
+    showGlobalLoading('실시간 API에서 최신 기상 데이터를 가져오고 있습니다...');
     try {
         const result = await apiRequest('/api/update_data', { method: 'POST' });
         
         if (result.success) {
             const data = result.data;
             showNotification(
-                `✅ ${data.message}\n📊 ${data.old_count?.toLocaleString()} → ${data.new_count?.toLocaleString()}행\n🌐 API 성공률: ${data.api_success_count}/4`, 
+                `${data.message}\n ${data.old_count?.toLocaleString()} → ${data.new_count?.toLocaleString()}행\n API 성공률: ${data.api_success_count}/4`, 
                 'success'
             );
             checkStatus();
@@ -739,14 +739,14 @@ async function updateData() {
             throw new Error(result.error);
         }
     } catch (error) {
-        showNotification('❌ 데이터 업데이트 오류: ' + error.message, 'error');
+        showNotification('데이터 업데이트 오류: ' + error.message, 'error');
     } finally {
         hideGlobalLoading();
     }
 }
 
 async function trainModel() {
-    showGlobalLoading('🎓 4가지 고급 AI 모델을 훈련하고 있습니다...\n이 과정은 몇 분 정도 소요될 수 있습니다.');
+    showGlobalLoading(' 4가지 고급 AI 모델을 훈련하고 있습니다...\n이 과정은 몇 분 정도 소요될 수 있습니다.');
     try {
         const result = await apiRequest('/api/train_advanced_models', { 
             method: 'POST',
@@ -755,12 +755,12 @@ async function trainModel() {
         
         if (result.success) {
             const data = result.data;
-            let message = `🎓 AI 모델 훈련 완료!\n📊 훈련된 모델: ${data.models_trained}개\n`;
+            let message = `AI 모델 훈련 완료!\n 훈련된 모델: ${data.models_trained}개\n`;
             if (data.best_model) {
-                message += `🏆 최고 성능: ${data.best_model.name} (${data.best_model.metric}: ${data.best_model.score?.toFixed(4)})\n`;
+                message += `최고 성능: ${data.best_model.name} (${data.best_model.metric}: ${data.best_model.score?.toFixed(4)})\n`;
             }
-            message += `📈 평균 정확도: ${data.average_accuracy?.toFixed(3) || 'N/A'}\n`;
-            message += `🕐 시간자료 활용: ${data.hourly_data_used ? '예' : '아니오'}`;
+            message += `평균 정확도: ${data.average_accuracy?.toFixed(3) || 'N/A'}\n`;
+            message += `시간자료 활용: ${data.hourly_data_used ? '예' : '아니오'}`;
             
             showNotification(message, 'success', 8000);
             checkStatus();
@@ -768,7 +768,7 @@ async function trainModel() {
             throw new Error(result.error);
         }
     } catch (error) {
-        showNotification('❌ 모델 훈련 오류: ' + error.message, 'error');
+        showNotification('모델 훈련 오류: ' + error.message, 'error');
     } finally {
         hideGlobalLoading();
     }
@@ -780,11 +780,11 @@ async function trainModel() {
 
 async function createVisualization(type) {
     const vizNames = {
-        'precipitation': '💧 강수량 시계열 분석',
-        'distribution': '📊 강수량 분포 차트',
-        'monthly': '📅 월별 패턴 분석',
-        'correlation': '🔗 상관관계 매트릭스',
-        'risk_distribution': '⚠️ 위험도 분포 분석'
+        'precipitation': '강수량 시계열 분석',
+        'distribution': '강수량 분포 차트',
+        'monthly': '월별 패턴 분석',
+        'correlation': '상관관계 매트릭스',
+        'risk_distribution': '위험도 분포 분석'
     };
     
     showGlobalLoading(`${vizNames[type] || type} 차트를 생성하고 있습니다...`);
@@ -797,11 +797,11 @@ async function createVisualization(type) {
             if (vizArea) {
                 vizArea.innerHTML = `
                     <div class="viz-result" style="width: 100%;">
-                        <img src="${data.image}" class="viz-image" alt="${type} 차트" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 16px;">
-                        <div class="viz-info" style="background: #f8f9fc; padding: 16px; border-radius: 8px; font-size: 14px;">
-                            <p><strong>📈 분석 완료:</strong> ${vizNames[type] || type}</p>
-                            <p><strong>📊 차트 유형:</strong> ${type}</p>
-                            <p><strong>⏰ 생성 시간:</strong> ${new Date().toLocaleString()}</p>
+                        <img src="${data.image}" class="viz-image" alt="${type} 차트" style="width: 100%; margin-bottom: 16px;">
+                        <div class="viz-info" style=" padding: 10px; font-size: 16px;">
+                            <p><strong>분석 완료:</strong> ${vizNames[type] || type}</p>
+                            <p><strong>차트 유형:</strong> ${type}</p>
+                            <p><strong>생성 시간:</strong> ${new Date().toLocaleString()}</p>
                         </div>
                     </div>
                 `;
@@ -814,19 +814,19 @@ async function createVisualization(type) {
                 }
             }
             
-            showNotification(`✅ ${vizNames[type]} 생성이 완료되었습니다.`, 'success');
+            showNotification(`${vizNames[type]} 생성이 완료되었습니다.`, 'success');
         } else {
             throw new Error(result.error);
         }
     } catch (error) {
-        showNotification('❌ 시각화 오류: ' + error.message, 'error');
+        showNotification('시각화 오류: ' + error.message, 'error');
     } finally {
         hideGlobalLoading();
     }
 }
 
 async function createModelVisualization() {
-    showGlobalLoading('🤖 AI 모델 성능 비교 분석을 생성하고 있습니다...');
+    showGlobalLoading('AI 모델 성능 비교 분석을 생성하고 있습니다...');
     try {
         const result = await apiRequest('/api/create_model_comparison', { method: 'POST' });
         
@@ -836,20 +836,19 @@ async function createModelVisualization() {
             if (vizArea) {
                 vizArea.innerHTML = `
                     <div class="viz-result" style="width: 100%;">
-                        <img src="${data.image}" class="viz-image" alt="모델 성능 비교 차트" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 16px; cursor: pointer;" onclick="openImageModal('${data.image}')">
-                        <div class="viz-info" style="background: linear-gradient(135deg, #2c5ff7, #4a90e2); color: white; padding: 20px; border-radius: 12px; font-size: 14px;">
-                            <h4 style="margin-bottom: 12px; color: white;">🤖 AI 모델 성능 분석 결과</h4>
-                            <p><strong>🏆 최고 모델:</strong> ${data.best_model || 'N/A'}</p>
-                            <p><strong>📈 평균 정확도:</strong> ${data.avg_accuracy || 'N/A'}</p>
-                            <p><strong>🔢 분석 모델:</strong> ${data.models_count || 4}개</p>
-                            <p><strong>📊 활용 데이터:</strong> ${data.data_used || 'N/A'}</p>
+                        <img src="${data.image}" class="viz-image" alt="모델 성능 비교 차트" style="width: 100%; margin-bottom: 16px; cursor: pointer;" onclick="openImageModal('${data.image}')">
+                        <div class="viz-info" style="padding: 10px; font-size: 16px;">
+                            <p><strong>최고 모델:</strong> ${data.best_model || 'N/A'}</p>
+                            <p><strong>평균 정확도:</strong> ${data.avg_accuracy || 'N/A'}</p>
+                            <p><strong>분석 모델:</strong> ${data.models_count || 4}개</p>
+                            <p><strong>활용 데이터:</strong> ${data.data_used || 'N/A'}</p>
                         </div>
                     </div>
                 `;
             }
             
             showNotification(
-                `🤖 AI 모델 성능 비교 분석이 완료되었습니다.\n🏆 최고 성능: ${data.best_model}\n📈 평균 정확도: ${data.avg_accuracy}`, 
+                `AI 모델 성능 비교 분석이 완료되었습니다.\n 최고 성능: ${data.best_model}\n 평균 정확도: ${data.avg_accuracy}`, 
                 'success', 
                 6000
             );
@@ -857,7 +856,7 @@ async function createModelVisualization() {
             throw new Error(result.error);
         }
     } catch (error) {
-        showNotification('❌ 모델 비교 오류: ' + error.message, 'error');
+        showNotification('모델 비교 오류: ' + error.message, 'error');
     } finally {
         hideGlobalLoading();
     }
@@ -913,24 +912,24 @@ async function logout() {
         const result = await apiRequest('/api/logout');
         
         if (result.success) {
-            showNotification('👋 로그아웃되었습니다. 이용해 주셔서 감사합니다!', 'info');
+            showNotification('로그아웃되었습니다. 이용해 주셔서 감사합니다!', 'info');
             await checkLoginAndUpdateUI();
         }
     } catch (error) {
-        showNotification('❌ 로그아웃 오류: ' + error.message, 'error');
+        showNotification('로그아웃 오류: ' + error.message, 'error');
     }
 }
 
 function showRegister() {
     showNotification(
-        '👋 회원가입 기능은 준비 중입니다!\n🎯 데모 계정으로 먼저 체험해보세요:\n\n📧 ID: admin\n🔑 PW: 1234', 
+        '회원가입 기능은 준비 중입니다!\n 데모 계정으로 먼저 체험해보세요:\n\n ID: admin\n PW: 1234', 
         'info', 
         7000
     );
 }
 
 function requireLogin(service) {
-    showNotification(`🔒 ${service} 서비스는 로그인 후 이용 가능합니다.`, 'warning');
+    showNotification(`${service} 서비스는 로그인 후 이용 가능합니다.`, 'warning');
     setTimeout(() => {
         window.location.href = '/login';
     }, 1500);
@@ -953,7 +952,7 @@ function goToDashboard() {
                     }, 1000);
                 }
             } else {
-                showNotification('🔒 로그인이 필요한 서비스입니다.', 'warning');
+                showNotification('로그인이 필요한 서비스입니다.', 'warning');
                 setTimeout(() => {
                     goToLogin();
                 }, 1500);
@@ -966,7 +965,7 @@ function goToDashboard() {
 
 function showDemo() {
     showNotification(
-        '🎬 데모 기능은 준비 중입니다!\n🚀 로그인 후 전체 서비스를 이용해보세요!\n\n🎯 데모 계정: admin / 1234', 
+        '데모 기능은 준비 중입니다!\n 로그인 후 전체 서비스를 이용해보세요!\n\n 데모 계정: admin / 1234', 
         'info', 
         5000
     );
@@ -1059,12 +1058,12 @@ async function retryOperation(operation, maxRetries = 3, delay = 1000) {
 function initNetworkMonitoring() {
     // 온라인/오프라인 상태 감지
     window.addEventListener('online', () => {
-        showNotification('🌐 네트워크 연결이 복구되었습니다.', 'success', 3000);
+        showNotification('네트워크 연결이 복구되었습니다.', 'success', 3000);
         checkStatus(); // 상태 재확인
     });
     
     window.addEventListener('offline', () => {
-        showNotification('📡 네트워크 연결이 끊어졌습니다. 일부 기능이 제한될 수 있습니다.', 'warning', 5000);
+        showNotification('네트워크 연결이 끊어졌습니다. 일부 기능이 제한될 수 있습니다.', 'warning', 5000);
     });
 }
 
@@ -1131,7 +1130,7 @@ function validateInputs() {
     }
     
     if (errors.length > 0) {
-        showNotification('❌ 입력값 검증 실패:\n' + errors.join('\n'), 'error', 5000);
+        showNotification('입력값 검증 실패:\n' + errors.join('\n'), 'error', 5000);
         return false;
     }
     
@@ -1172,7 +1171,7 @@ function setupInputValidation() {
    ========================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🌊 CREW_SOOM 수정된 대시보드 초기화 시작...');
+    console.log('CREW_SOOM 수정된 대시보드 초기화 시작...');
     
     try {
         // 1. 기본 기능 초기화
@@ -1213,7 +1212,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isFirstVisit = !localStorage.getItem('crew_soom_visited');
             if (isFirstVisit) {
                 showNotification(
-                    '🌊 CREW_SOOM에 오신 것을 환영합니다!\n🤖 4가지 AI 모델로 정확한 침수 예측을 경험해보세요.\n\n🎯 데모 계정: admin / 1234', 
+                    'CREW_SOOM에 오신 것을 환영합니다!\n 4가지 AI 모델로 정확한 침수 예측을 경험해보세요.\n\n 데모 계정: admin / 1234', 
                     'info', 
                     8000
                 );
@@ -1225,15 +1224,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
                 .then(registration => {
-                    console.log('✅ Service Worker 등록 성공:', registration);
+                    console.log('Service Worker 등록 성공:', registration);
                 })
                 .catch(error => {
-                    console.log('⚠️ Service Worker 등록 실패:', error);
+                    console.log('Service Worker 등록 실패:', error);
                 });
         }
         
-        console.log('✅ CREW_SOOM 수정된 대시보드 초기화 완료!');
-        console.log('🔧 추가된 기능들:');
+        console.log('CREW_SOOM 수정된 대시보드 초기화 완료!');
+        console.log('추가된 기능들:');
         console.log('   - 강화된 오류 처리 및 재시도 로직');
         console.log('   - 실시간 입력값 검증');
         console.log('   - 네트워크 상태 모니터링');
@@ -1241,7 +1240,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('   - 성능 최적화 (디바운싱/스로틀링)');
         
     } catch (error) {
-        console.error('❌ 대시보드 초기화 실패:', error);
+        console.error('대시보드 초기화 실패:', error);
         showNotification('시스템 초기화 중 오류가 발생했습니다. 페이지를 새로고침해주세요.', 'error', 10000);
     }
 });
@@ -1325,7 +1324,7 @@ function safeLocalStorage(key, value = null) {
 async function copyToClipboard(text) {
     try {
         await navigator.clipboard.writeText(text);
-        showNotification('📋 클립보드에 복사되었습니다.', 'success', 2000);
+        showNotification('클립보드에 복사되었습니다.', 'success', 2000);
     } catch (error) {
         console.error('클립보드 복사 실패:', error);
         showNotification('클립보드 복사에 실패했습니다.', 'error');
@@ -1351,7 +1350,7 @@ function showVersion() {
     const buildDate = '2024-12-15';
     
     showNotification(
-        `🌊 CREW_SOOM\n버전: ${version}\n빌드: ${buildDate}\n\n🤖 지원 모델: RandomForest, XGBoost, LSTM+CNN, Transformer\n📊 예측 정확도: 95.2%`, 
+        `CREW_SOOM\n버전: ${version}\n빌드: ${buildDate}\n\n 지원 모델: RandomForest, XGBoost, LSTM+CNN, Transformer\n 예측 정확도: 95.2%`, 
         'info', 
         6000
     );
