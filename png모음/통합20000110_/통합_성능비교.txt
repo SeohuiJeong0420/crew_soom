@@ -1,0 +1,10 @@
+4개 모델 성능 비교(통합데이터)
+최고의 모델은 RANDOMFOREST(통합)
+Transformer+SMOTE는 침수 Recall과 AUC에서 강점을 보이며, 실사용 시 "침수 탐지"가 핵심이라면 매우 효과적
+
+해석 요약 테이블
+     모델                  Accuracy   Recall    ROC AUC    Precision    F1-score
+RandomForest            0.980      0.850       0.970         0.960        0.920
+XGBoost                   0.964      0.876       0.977         0.816        0.845
+LSTM+CNN               0.587      0.000       0.769         0.196        0.320
+Transformer+SMOTE    0.740      0.910       0.874         0.290        0.440
