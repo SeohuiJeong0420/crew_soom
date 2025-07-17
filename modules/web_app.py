@@ -43,11 +43,11 @@ from modules.visualizer import DataVisualizer
 try:
     plt.rcParams['font.family'] = ['Malgun Gothic', 'DejaVu Sans']
     plt.rcParams['axes.unicode_minus'] = False
-    print("✅ 한글 폰트 설정 완료")
+    print("한글 폰트 설정 완료")
 except Exception as e:
     plt.rcParams['font.family'] = 'DejaVu Sans'
     plt.rcParams['axes.unicode_minus'] = False
-    print(f"⚠️ 기본 폰트 사용: {e}")
+    print(f"기본 폰트 사용: {e}")
 
 
 class AdvancedFloodWebApp:
@@ -92,9 +92,9 @@ class AdvancedFloodWebApp:
         
         if self.api_available:
             self.multi_api = MultiWeatherAPI(self.service_key)
-            print("✅ 기상청 API 연결 성공")
+            print("기상청 API 연결 성공")
         else:
-            print("⚠️ API 키가 없습니다. 시뮬레이션 모드로 실행됩니다.")
+            print("API 키가 없습니다. 시뮬레이션 모드로 실행됩니다.")
             self.multi_api = None
         
         # 디렉토리 생성
@@ -129,9 +129,9 @@ class AdvancedFloodWebApp:
                 self.data_start_date = self.data['obs_date'].min()
                 self.data_end_date = self.data['obs_date'].max()
                 self.data_last_updated = datetime.now()
-                print(f"✅ 기존 일자료 로드: {len(self.data)}행")
+                print(f"기존 일자료 로드: {len(self.data)}행")
             except Exception as e:
-                print(f"❌ 일자료 로드 실패: {e}")
+                print(f"일자료 로드 실패: {e}")
         
         # 시간자료 확인
         hourly_path = 'data/processed/ASOS_HOURLY_DATA.csv'
@@ -139,9 +139,9 @@ class AdvancedFloodWebApp:
             try:
                 self.hourly_data = pd.read_csv(hourly_path)
                 self.hourly_data['obs_datetime'] = pd.to_datetime(self.hourly_data['obs_datetime'])
-                print(f"✅ 기존 시간자료 로드: {len(self.hourly_data)}행")
+                print(f"기존 시간자료 로드: {len(self.hourly_data)}행")
             except Exception as e:
-                print(f"❌ 시간자료 로드 실패: {e}")
+                print(f"시간자료 로드 실패: {e}")
         
         # 기존 모델 확인
         model_files = {
@@ -158,18 +158,18 @@ class AdvancedFloodWebApp:
                         self.models[name] = joblib.load(path)
                     elif path.endswith('.h5') and TF_AVAILABLE:
                         self.models[name] = tf.keras.models.load_model(path)
-                    print(f"✅ {name} 모델 로드 성공")
+                    print(f"{name} 모델 로드 성공")
                 except Exception as e:
-                    print(f"❌ {name} 모델 로드 실패: {e}")
+                    print(f"{name} 모델 로드 실패: {e}")
         
         # 성능 정보 로드
         perf_path = 'models/model_performance.pkl'
         if os.path.exists(perf_path):
             try:
                 self.model_performance = joblib.load(perf_path)
-                print("✅ 모델 성능 정보 로드 성공")
+                print("모델 성능 정보 로드 성공")
             except Exception as e:
-                print(f"❌ 성능 정보 로드 실패: {e}")
+                print(f"성능 정보 로드 실패: {e}")
     
     def setup_routes(self):
         """모든 라우트 설정 - 누락된 라우트 추가"""
@@ -189,6 +189,14 @@ class AdvancedFloodWebApp:
         @self.app.route('/news')
         def news_page():
             return render_template('news.html')
+        
+        @self.app.route('/visualization')
+        def visualization_page():
+            return render_template('visualization_sub.html')
+        
+        @self.app.route('/visualization2')
+        def visualization2_page():
+            return render_template('visualization_sub2.html')
         
         @self.app.route('/api/status')
         def get_status():
@@ -311,7 +319,7 @@ class AdvancedFloodWebApp:
                     self.create_sample_data()
                 
                 # 모델 훈련 실행
-                print("🎓 고급 모델 훈련 시작...")
+                print("고급 모델 훈련 시작...")
                 models, performance = self.advanced_trainer.train_all_models(self.data)
                 
                 # 결과 저장
@@ -345,7 +353,7 @@ class AdvancedFloodWebApp:
                     })
                     
             except Exception as e:
-                print(f"❌ 모델 훈련 오류: {e}")
+                print(f"모델 훈련 오류: {e}")
                 return jsonify({'success': False, 'message': f'모델 훈련 실패: {str(e)}'})
         
         # 나머지 기존 라우트들...
@@ -375,7 +383,7 @@ class AdvancedFloodWebApp:
                             }
                             models_used.append(model_name)
                         except Exception as e:
-                            print(f"❌ {model_name} 예측 실패: {e}")
+                            print(f" {model_name} 예측 실패: {e}")
                 
                 # 시간자료 기반 추가 분석
                 hourly_analysis = self.analyze_hourly_patterns(data)
@@ -502,9 +510,9 @@ class AdvancedFloodWebApp:
                 if 'is_flood_risk' in self.data.columns:
                     risk_data = self.data[self.data['is_flood_risk'] == 1]
                     plt.scatter(risk_data['obs_date'], risk_data['precipitation'], 
-                              color='red', s=30, alpha=0.8, label='침수 위험일')
+                            color='red', s=30, alpha=0.8, label='침수 위험일')
                 
-                plt.title('📊 일별 강수량 분석', fontsize=16, fontweight='bold')
+                plt.title('일별 강수량 분석', fontsize=16, fontweight='bold')
                 plt.ylabel('강수량 (mm)')
                 plt.legend()
                 plt.grid(True, alpha=0.3)
@@ -514,7 +522,7 @@ class AdvancedFloodWebApp:
                 if 'month' in self.data.columns:
                     monthly_avg = self.data.groupby('month')['precipitation'].mean()
                     plt.bar(monthly_avg.index, monthly_avg.values, color='skyblue', alpha=0.8)
-                    plt.title('📈 월별 평균 강수량', fontsize=14)
+                    plt.title('월별 평균 강수량', fontsize=14)
                     plt.xlabel('월')
                     plt.ylabel('평균 강수량 (mm)')
                 
@@ -533,12 +541,12 @@ class AdvancedFloodWebApp:
                     # 위험도 구간별 분포
                     plt.subplot(2, 2, 2)
                     risk_categories = pd.cut(self.data['precipitation'], 
-                                           bins=[0, 10, 30, 50, 100, float('inf')], 
-                                           labels=['안전', '주의', '경계', '위험', '매우위험'])
+                                            bins=[0, 10, 30, 50, 100, float('inf')], 
+                                            labels=['안전', '주의', '경계', '위험', '매우위험'])
                     risk_counts = risk_categories.value_counts()
                     colors = ['#4CAF50', '#FFEB3B', '#FF9800', '#F44336', '#9C27B0']
                     plt.pie(risk_counts.values, labels=risk_counts.index, autopct='%1.1f%%', 
-                           colors=colors, startangle=90)
+                            colors=colors, startangle=90)
                     plt.title('위험도 구간별 분포')
                     
                     # 월별 위험일 수
@@ -554,7 +562,7 @@ class AdvancedFloodWebApp:
                     plt.subplot(2, 2, 4)
                     if 'avg_temp' in self.data.columns:
                         plt.scatter(self.data['avg_temp'], self.data['precipitation'], 
-                                  alpha=0.6, color='#2c5ff7')
+                                    alpha=0.6, color='#2c5ff7')
                         plt.title('온도 vs 강수량 관계')
                         plt.xlabel('온도 (°C)')
                         plt.ylabel('강수량 (mm)')
@@ -605,7 +613,7 @@ class AdvancedFloodWebApp:
                         season_data.append(season_precip)
                     
                     plt.bar(seasons.keys(), season_data, 
-                           color=['#00c851', '#ff4444', '#ffbb33', '#2c5ff7'], alpha=0.8)
+                            color=['#00c851', '#ff4444', '#ffbb33', '#2c5ff7'], alpha=0.8)
                     plt.title('계절별 평균 강수량')
                     plt.ylabel('평균 강수량 (mm)')
             
@@ -618,7 +626,7 @@ class AdvancedFloodWebApp:
                     # 히트맵
                     plt.subplot(1, 2, 1)
                     sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', center=0, 
-                               fmt='.2f', cbar_kws={'label': '상관계수'})
+                                fmt='.2f', cbar_kws={'label': '상관계수'})
                     plt.title('변수간 상관관계 매트릭스')
                     
                     # 강수량과의 상관관계 바차트
@@ -645,7 +653,7 @@ class AdvancedFloodWebApp:
             return filepath
             
         except Exception as e:
-            print(f"❌ 차트 생성 오류 ({chart_type}): {e}")
+            print(f"차트 생성 오류 ({chart_type}): {e}")
             plt.close()
             return None
     
@@ -671,11 +679,11 @@ class AdvancedFloodWebApp:
             for i, metric in enumerate(metrics):
                 values = [self.model_performance[model].get(metric, 0) for model in model_names]
                 ax1.bar(x + i*width, values, width, label=metric.upper(), 
-                       color=colors[i % len(colors)], alpha=0.8)
+                        color=colors[i % len(colors)], alpha=0.8)
             
             ax1.set_xlabel('모델')
             ax1.set_ylabel('점수')
-            ax1.set_title('📊 모델별 성능 지표 비교')
+            ax1.set_title('모델별 성능 지표 비교')
             ax1.set_xticks(x + width * 2)
             ax1.set_xticklabels(model_names, rotation=45)
             ax1.legend()
@@ -685,14 +693,14 @@ class AdvancedFloodWebApp:
             ax2 = axes[0, 1]
             auc_scores = [self.model_performance[model].get('auc', 0) for model in model_names]
             bars = ax2.bar(model_names, auc_scores, color=['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'][:len(model_names)])
-            ax2.set_title('🏆 AUC 점수 비교')
+            ax2.set_title('AUC 점수 비교')
             ax2.set_ylabel('AUC 점수')
             
             # 값 표시
             for bar, score in zip(bars, auc_scores):
                 height = bar.get_height()
                 ax2.annotate(f'{score:.3f}', xy=(bar.get_x() + bar.get_width()/2, height),
-                           xytext=(0, 3), textcoords="offset points", ha='center', va='bottom')
+                            xytext=(0, 3), textcoords="offset points", ha='center', va='bottom')
             
             plt.setp(ax2.get_xticklabels(), rotation=45)
             
@@ -700,13 +708,13 @@ class AdvancedFloodWebApp:
             ax3 = axes[1, 0]
             f1_scores = [self.model_performance[model].get('f1_score', 0) for model in model_names]
             bars = ax3.bar(model_names, f1_scores, color=['#feca57', '#ff9ff3', '#54a0ff', '#5f27cd'][:len(model_names)])
-            ax3.set_title('🎯 F1 점수 비교')
+            ax3.set_title('F1 점수 비교')
             ax3.set_ylabel('F1 점수')
             
             for bar, score in zip(bars, f1_scores):
                 height = bar.get_height()
                 ax3.annotate(f'{score:.3f}', xy=(bar.get_x() + bar.get_width()/2, height),
-                           xytext=(0, 3), textcoords="offset points", ha='center', va='bottom')
+                            xytext=(0, 3), textcoords="offset points", ha='center', va='bottom')
             
             plt.setp(ax3.get_xticklabels(), rotation=45)
             
@@ -727,14 +735,14 @@ class AdvancedFloodWebApp:
                 overall_scores.append(overall)
             
             bars = ax4.bar(model_names, overall_scores, 
-                          color=['#e17055', '#00b894', '#0984e3', '#6c5ce7'][:len(model_names)])
-            ax4.set_title('📈 종합 성능 점수')
+                            color=['#e17055', '#00b894', '#0984e3', '#6c5ce7'][:len(model_names)])
+            ax4.set_title('종합 성능 점수')
             ax4.set_ylabel('종합 점수')
             
             for bar, score in zip(bars, overall_scores):
                 height = bar.get_height()
                 ax4.annotate(f'{score:.3f}', xy=(bar.get_x() + bar.get_width()/2, height),
-                           xytext=(0, 3), textcoords="offset points", ha='center', va='bottom')
+                            xytext=(0, 3), textcoords="offset points", ha='center', va='bottom')
             
             plt.setp(ax4.get_xticklabels(), rotation=45)
             
@@ -751,7 +759,7 @@ class AdvancedFloodWebApp:
             return filepath
             
         except Exception as e:
-            print(f"❌ 모델 비교 차트 생성 오류: {e}")
+            print(f"모델 비교 차트 생성 오류: {e}")
             plt.close()
             return None
     
@@ -787,7 +795,7 @@ class AdvancedFloodWebApp:
             return min(100, max(0, prediction))
             
         except Exception as e:
-            print(f"❌ {model_name} 예측 오류: {e}")
+            print(f" {model_name} 예측 오류: {e}")
             # 기본 규칙 기반 예측으로 폴백
             return self.calculate_risk_score(input_data)
     
@@ -814,7 +822,7 @@ class AdvancedFloodWebApp:
             return 3, new_data
             
         except Exception as e:
-            print(f"❌ 실시간 데이터 수집 실패: {e}")
+            print(f"실시간 데이터 수집 실패: {e}")
             return 0, None
     
     def create_sample_data(self):
@@ -854,10 +862,10 @@ class AdvancedFloodWebApp:
             # 파일로 저장
             self.save_data_to_file()
             
-            print(f"✅ 개선된 샘플 데이터 생성 완료: {len(sample_data)}행")
+            print(f"개선된 샘플 데이터 생성 완료: {len(sample_data)}행")
             
         except Exception as e:
-            print(f"❌ 샘플 데이터 생성 실패: {e}")
+            print(f"샘플 데이터 생성 실패: {e}")
     
     def calculate_risk_score(self, data):
         """규칙 기반 위험도 계산"""
@@ -931,7 +939,7 @@ class AdvancedFloodWebApp:
             return 3
             
         except Exception as e:
-            print(f"❌ 과거 데이터 수집 실패: {e}")
+            print(f"과거 데이터 수집 실패: {e}")
             return 0
     
     def save_data_to_file(self):
@@ -939,7 +947,7 @@ class AdvancedFloodWebApp:
         if self.data is not None:
             output_path = 'data/processed/REAL_WEATHER_DATA.csv'
             self.data.to_csv(output_path, index=False, encoding='utf-8-sig')
-            print(f"💾 데이터 저장: {output_path}")
+            print(f"데이터 저장: {output_path}")
     
     def start_auto_update_service(self):
         """자동 업데이트 서비스"""
@@ -955,28 +963,28 @@ class AdvancedFloodWebApp:
                             self.save_data_to_file()
                             self.data_end_date = new_data['obs_date']
                             self.data_last_updated = datetime.now()
-                            print(f"🔄 자동 업데이트 완료 ({success_count}/3)")
+                            print(f" 자동 업데이트 완료 ({success_count}/3)")
                     except Exception as e:
-                        print(f"❌ 자동 업데이트 오류: {e}")
+                        print(f"자동 업데이트 오류: {e}")
                 
                 time.sleep(3600)  # 1시간마다
         
         if self.api_available:
             update_thread = threading.Thread(target=auto_update_worker, daemon=True)
             update_thread.start()
-            print("🔄 자동 업데이트 서비스 시작")
+            print("자동 업데이트 서비스 시작")
     
     def run(self):
         """웹 서버 실행"""
-        print("🌊 CREW_SOOM 수정된 침수 예측 시스템 시작!")
-        print("🔧 누락된 기능들이 모두 추가되었습니다:")
-        print("   📊 차트 생성 API 추가")
-        print("   🤖 모델 비교 차트 생성")
-        print("   🎓 고급 모델 훈련 기능")
-        print("   ⚠️ 오류 처리 강화")
-        print("📍 주소: http://localhost:8000")
-        print("🔑 로그인: admin / 1234")
-        print("🛑 종료: Ctrl+C")
+        print("CREW_SOOM 수정된 침수 예측 시스템 시작!")
+        print(" 누락된 기능들이 모두 추가되었습니다:")
+        print("    차트 생성 API 추가")
+        print("    모델 비교 차트 생성")
+        print("    고급 모델 훈련 기능")
+        print("    오류 처리 강화")
+        print(" 주소: http://localhost:8000")
+        print(" 로그인: admin / 1234")
+        print(" 종료: Ctrl+C")
         
         self.app.run(debug=True, host='0.0.0.0', port=8000)
 

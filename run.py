@@ -214,6 +214,14 @@ def create_app():
     def news_page():
         return render_template('news.html')
     
+    @app.route('/visualization')
+    def visualization_page():
+        return render_template('visualization_sub.html')
+    
+    @app.route('/visualization2')
+    def visualization2_page():
+        return render_template('visualization_sub2.html')
+    
     # API 라우트
     @app.route('/api/login', methods=['POST'])
     def api_login():
@@ -366,7 +374,7 @@ def create_app():
     def api_create_model_comparison():
         try:
             fig, axes = plt.subplots(2, 2, figsize=(15, 12))
-            fig.suptitle('🤖 AI 모델 성능 비교', fontsize=16)
+            fig.suptitle(' AI 모델 성능 비교', fontsize=16)
             
             # 성능 데이터
             models = ['RandomForest', 'XGBoost', 'LSTM+CNN', 'Transformer']
@@ -384,7 +392,7 @@ def create_app():
             for i, (metric, values) in enumerate(metrics.items()):
                 axes[0,0].bar(x + i*width, values, width, label=metric, alpha=0.8)
             
-            axes[0,0].set_title('📊 모델별 성능 지표')
+            axes[0,0].set_title(' 모델별 성능 지표')
             axes[0,0].set_xticks(x + width*1.5)
             axes[0,0].set_xticklabels(models, rotation=45)
             axes[0,0].legend()
@@ -394,7 +402,7 @@ def create_app():
             auc_scores = metrics['auc']
             colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
             bars = axes[0,1].bar(models, auc_scores, color=colors)
-            axes[0,1].set_title('🏆 AUC 점수 순위')
+            axes[0,1].set_title(' AUC 점수 순위')
             axes[0,1].set_ylabel('AUC 점수')
             
             for bar, score in zip(bars, auc_scores):
@@ -404,7 +412,7 @@ def create_app():
             # 3. F1 Score 비교
             f1_scores = metrics['f1_score']
             bars = axes[1,0].bar(models, f1_scores, color=colors)
-            axes[1,0].set_title('🎯 F1 Score 순위')
+            axes[1,0].set_title(' F1 Score 순위')
             axes[1,0].set_ylabel('F1 Score')
             
             for bar, score in zip(bars, f1_scores):
@@ -416,7 +424,7 @@ def create_app():
             labels = ['일자료\n(15,420행)', '시간자료\n(8,760행)']
             axes[1,1].pie(data_info, labels=labels, autopct='%1.1f%%',
                         startangle=90, colors=['#FF9999', '#66B2FF'])
-            axes[1,1].set_title('📊 활용 데이터 현황')
+            axes[1,1].set_title(' 활용 데이터 현황')
             
             plt.tight_layout()
             
@@ -459,7 +467,7 @@ def create_app():
     return app
 
 if __name__ == '__main__':
-    print("🌊 CREW_SOOM AI 침수 예측 플랫폼")
+    print("CREW_SOOM AI 침수 예측 플랫폼")
     print("=" * 50)
     
     # 디렉토리와 기본 파일 생성
@@ -470,30 +478,30 @@ if __name__ == '__main__':
     try:
         # 기존 웹앱 모듈 import 시도
         from modules.web_app import AdvancedFloodWebApp
-        print("✅ 고급 웹앱 모듈 로드 성공")
+        print("고급 웹앱 모듈 로드 성공")
         
         # 웹앱 인스턴스 생성 및 실행
         app_instance = AdvancedFloodWebApp()
         app_instance.run()
         
     except ImportError as e:
-        print(f"⚠️ 고급 모듈 로드 실패: {e}")
-        print("📦 기본 모드로 실행합니다...")
+        print(f" 고급 모듈 로드 실패: {e}")
+        print(" 기본 모드로 실행합니다...")
         
         # 기본 Flask 앱으로 실행
         app = create_app()
         
-        print("🚀 서버 시작 중...")
-        print("📍 주소: http://localhost:8000")
-        print("🔑 로그인: admin / 1234")
-        print("🛑 종료: Ctrl+C")
+        print(" 서버 시작 중...")
+        print(" 주소: http://localhost:8000")
+        print(" 로그인: admin / 1234")
+        print(" 종료: Ctrl+C")
         print("=" * 50)
         
         app.run(debug=True, host='0.0.0.0', port=8000)
     
     except Exception as e:
-        print(f"❌ 실행 오류: {e}")
-        print("\n🔧 문제 해결 방법:")
+        print(f" 실행 오류: {e}")
+        print("\n 문제 해결 방법:")
         print("1. pip install -r requirements.txt")
         print("2. .env 파일에 API 키 설정")
         print("3. Python 버전 확인 (3.8 이상 필요)")
