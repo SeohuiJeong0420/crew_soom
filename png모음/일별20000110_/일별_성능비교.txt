@@ -1,0 +1,17 @@
+4개 모델 성능 비교
+4개 모델 성능 비교표
+
+    모델           Accuracy    Recall (flood=1)    ROC AUC
+RandomForest    0.9811          0.8000             0.9843
+XGBoost           0.9641          0.8765             0.9775
+LSTM+CNN       0.5873          0.8642             0.7688
+Transformer       0.7299          0.6790             0.7812
+
+해석 요약
+RandomForest: 전체적으로 가장 안정적. Accuracy, Recall, ROC AUC 모두 우수.
+
+XGBoost: 침수 예측(Recall)에 가장 뛰어남. 성능 균형 좋음.
+
+LSTM+CNN: Accuracy는 낮지만 Recall은 높아, 침수 감지엔 민감한 편.
+
+Transformer: Recall은 나쁘지 않지만 Precision이 낮고 전체 정확도도 낮은 편.
