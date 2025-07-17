@@ -86,7 +86,7 @@ class WeatherDataCrolling:
     def save_today_weather(weather_data):
         """오늘 날씨를 고정 파일명으로 업데이트"""
         
-        filename = "오늘날씨.xlsx"  # 항상 같은 파일명
+        filename = "today_data/오늘날씨.xlsx"  # 항상 같은 파일명
         
         if weather_data:
             # 새 데이터를 DataFrame으로 변환
