@@ -1,85 +1,98 @@
-# modules/trainer.py
-import joblib
-import os
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+import pandas as pd
+import datetime
+from datetime import timedelta
 
-# XGBoost (선택사항)
-try:
-    from xgboost import XGBClassifier
-    XGB_AVAILABLE = True
-except ImportError:
-    XGB_AVAILABLE = False
+def preprocess_hourly_data():
+    df = pd.read_csv("data/asos_seoul_hourly.csv")
+    df['tm'] = pd.to_datetime(df['tm'])
 
-class ModelTrainer:
-    """모델 훈련"""
-    
-    def __init__(self):
-        self.models = {}
-        
-    def train_models(self, X, y, feature_names):
-        """여러 모델 훈련"""
-        
-        # 데이터 분할 (시계열 고려)
-        split_idx = int(len(X) * 0.8)
-        X_train = X.iloc[:split_idx]
-        X_test = X.iloc[split_idx:]
-        y_train = y.iloc[:split_idx]
-        y_test = y.iloc[split_idx:]
-        
-        print(f"📊 데이터 분할:")
-        print(f"   훈련: {len(X_train)}개, 테스트: {len(X_test)}개")
-        
-        # Random Forest
-        print("🌳 Random Forest 훈련...")
-        rf_model = RandomForestClassifier(
-            n_estimators=100,
-            max_depth=15,
-            class_weight='balanced',
-            random_state=42,
-            n_jobs=-1
-        )
-        
-        rf_model.fit(X_train, y_train)
-        self.models['RandomForest'] = rf_model
-        
-        # 성능 확인
-        y_pred = rf_model.predict(X_test)
-        report = classification_report(y_test, y_pred, output_dict=True)
-        print(f"   AUC: {report['macro avg']['f1-score']:.3f}")
-        
-        # XGBoost (가능한 경우)
-        if XGB_AVAILABLE:
-            print("🚀 XGBoost 훈련...")
-            xgb_model = XGBClassifier(
-                n_estimators=100,
-                max_depth=6,
-                learning_rate=0.1,
-                random_state=42
-            )
-            
-            xgb_model.fit(X_train, y_train)
-            self.models['XGBoost'] = xgb_model
-            
-            y_pred_xgb = xgb_model.predict(X_test)
-            report_xgb = classification_report(y_test, y_pred_xgb, output_dict=True)
-            print(f"   AUC: {report_xgb['macro avg']['f1-score']:.3f}")
-        
-        # 모델 저장
-        self.save_models(feature_names)
-        
-        return self.models
-    
-    def save_models(self, feature_names):
-        """모델 저장"""
-        os.makedirs('models', exist_ok=True)
-        
-        for name, model in self.models.items():
-            filename = f'models/{name.lower()}_model.pkl'
-            joblib.dump(model, filename)
-            print(f"💾 {name} 저장: {filename}")
-        
-        # 특성명 저장
-        joblib.dump(feature_names, 'models/feature_names.pkl')
-        print("💾 특성명 저장 완료")
+    flood_periods = [
+        ("2000-08-23", "2000-09-01"),
+        ("2002-08-30", "2002-09-01"),
+        ("2005-08-02", "2005-08-11"),
+        ("2006-07-09", "2006-07-29"),
+        ("2007-09-13", "2007-09-13"),
+        ("2011-07-26", "2011-07-29"),
+        ("2013-07-11", "2013-07-15"),
+        ("2013-07-18", "2013-07-18"),
+        ("2018-08-23", "2018-08-24"),
+        ("2018-08-26", "2018-09-01"),
+        ("2019-09-28", "2019-10-03"),
+        ("2020-07-28", "2020-08-11"),
+        ("2020-08-28", "2020-09-03"),
+        ("2020-09-01", "2020-09-07"),
+        ("2022-08-08", "2022-08-17"),
+        ("2022-08-28", "2022-09-06")
+    ]
+
+    flood_dates = set()
+    for start, end in flood_periods:
+        date_range = pd.date_range(start=start, end=end, freq='H')
+        flood_dates.update(date_range)
+
+    df['flood_risk'] = df['tm'].isin(flood_dates).astype(int)
+    df.to_csv("data/asos_seoul_hourly_with_flood_risk.csv", index=False)
+
+def preprocess_daily_data():
+    df = pd.read_csv("data/asos_seoul_daily.csv")
+    df['tm'] = pd.to_datetime(df['tm'])
+    df['month'] = df['tm'].dt.month
+    df['dayofweek'] = df['tm'].dt.dayofweek
+    df['year'] = df['tm'].dt.year
+    df['sumRn'] = df['sumRn'].fillna(0)
+
+    median_cols = ['minTa', 'maxTa', 'avgWs', 'avgTs', 'sumGsr', 'maxInsWs', 'sumSmlEv', 'avgPs']
+    for col in median_cols:
+        df[col] = df[col].fillna(df[col].median())
+
+    df['ddMefs'] = df['ddMefs'].fillna(0)
+
+    flood_periods = [
+        ("2000-08-23", "2000-09-01"),
+        ("2002-08-30", "2002-09-01"),
+        ("2005-08-02", "2005-08-11"),
+        ("2006-07-09", "2006-07-29"),
+        ("2007-09-13", "2007-09-13"),
+        ("2011-07-26", "2011-07-29"),
+        ("2013-07-11", "2013-07-15"),
+        ("2013-07-18", "2013-07-18"),
+        ("2018-08-23", "2018-08-24"),
+        ("2018-08-26", "2018-09-01"),
+        ("2019-09-28", "2019-10-03"),
+        ("2020-07-28", "2020-08-11"),
+        ("2020-08-28", "2020-09-03"),
+        ("2020-09-01", "2020-09-07"),
+        ("2022-08-08", "2022-08-17"),
+        ("2022-08-28", "2022-09-06")
+    ]
+
+    flood_dates = set()
+    for start, end in flood_periods:
+        start = datetime.datetime.strptime(start, "%Y-%m-%d")
+        end = datetime.datetime.strptime(end, "%Y-%m-%d")
+        while start <= end:
+            flood_dates.add(start.date())
+            start += timedelta(days=1)
+
+    df['flood_risk'] = df['tm'].dt.date.isin(flood_dates).astype(int)
+    df.loc[df['sumRn'] >= 30, 'flood_risk'] = 1
+
+    df.to_csv("data/asos_seoul_daily_enriched.csv", index=False)
+
+def preprocess_xgboost_features():
+    import pandas as pd
+
+    df = pd.read_csv("data/asos_seoul_daily_enriched.csv")
+    df['tm'] = pd.to_datetime(df['tm'])
+
+    df['month'] = df['tm'].dt.month
+    df['day'] = df['tm'].dt.day
+    df['weekday'] = df['tm'].dt.weekday
+    df['is_weekend'] = df['weekday'].apply(lambda x: 1 if x >= 5 else 0)
+
+    df['is_rainy'] = df['sumRn'].apply(lambda x: 1 if x >= 30 else 0)
+    df['rain_hours'] = df['sumRn'].apply(lambda x: round(x / 3))
+    df['max_hourly_rn'] = df['sumRn'].apply(lambda x: x if x <= 50 else 50)
+
+    df.to_csv("data/asos_seoul_daily_enriched.csv", index=False)
+    print("XGBoost용 파생 변수 추가 완료 및 저장됨.")
