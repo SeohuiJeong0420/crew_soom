@@ -17,7 +17,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>회원가입</h1>
+    <h1>👤 회원가입</h1>
   </div>
 
   <div class="register-box">
@@ -44,10 +44,10 @@
       });
       const result = await res.json();
       if (result.success) {
-        alert(' 회원가입 성공! 로그인 페이지로 이동합니다.');
+        alert('✅ 회원가입 성공! 로그인 페이지로 이동합니다.');
         location.href = '/login';
       } else {
-        alert('회원가입 실패' + result.message);
+        alert('❌ ' + result.message);
       }
     }
   </script>
