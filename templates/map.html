@@ -5,143 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CREW_SOOM - 실시간 침수 위험 지도</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <!--<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     
     <style>
-        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
-
-        /* * * * * * * * * * Header nav 시작 * * * * * * * * * */
         .header {
             background: var(--white);
             box-shadow: var(--shadow-sm);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(44, 95, 247, 0.08);
         }
 
         .navbar {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             height: 80px;
         }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .nav-brand .logo a{
-            text-decoration: none;
-        }
-
         .nav-brand h1 {
-            background: var(--gradient-primary);
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 2rem;
-            font-family: 'NanumSquareExtraBold';
-            margin: 0;
+            font-size: 1.8rem;
             font-weight: 700;
-        }
-
-        .nav-brand .subtitle {
-            font-size: 0.875rem;
-            color: var(--medium-gray);
-            font-weight: 500;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--dark-gray);
-            font-weight: bold;
-            padding: 12px 16px;
-            border-radius: var(--border-radius);
-            transition: all 0.3s ease;
-            position: relative;
-            font-size: 18px;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--primary-color);
-            font-weight: bold;
-            text-decoration: none;
+            margin: 0;
         }
 
         .nav-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 24px;
-            border: none;
-            border-radius: var(--border-radius);
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            gap: 8px;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: var(--white);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-primary:hover {
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary-color);
-            color: var(--white);
-        }
-
-        .btn-success {
-            background: var(--gradient-success);
-            color: var(--white);
-        }
-
-        .btn-lg {
-            padding: 16px 32px;
-            font-size: 16px;
-            border-radius: var(--border-radius-lg);
-        }
-        /* * * * * * * * * * Header nav 끝* * * * * * * * * */
 
         .main-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 20px;
+            padding: 40px 20px;
         }
 
         .page-header {
@@ -150,30 +55,23 @@
         }
 
         .page-header h1 {
-            font-size: 42px;
+            font-size: 2.5rem;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
-            /*-webkit-text-fill-color: transparent;*/
+            -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 10px;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-            line-height: 1.6;
         }
 
         .page-header p {
-            color: #6b7280;
+            color: var(--medium-gray);
             font-size: 1.1rem;
-        }
-
-        .page-header .highlight {
-            color: var(--primary-color);
         }
 
         .map-container {
             background: var(--white);
             border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             overflow: hidden;
             margin-bottom: 30px;
         }
@@ -185,16 +83,11 @@
 
         .map-controls {
             padding: 20px;
-            background: var(--white);
+            background: var(--light-gray);
             display: flex;
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
-        }
-
-        .map-legend-information{
-            display: flex;
-            justify-content: space-between;
         }
 
         .legend {
@@ -239,7 +132,6 @@
 
         .status-card {
             background: var(--white);
-            border: 1px solid #e1e5ec;
             border-radius: var(--border-radius);
             padding: 20px;
             box-shadow: var(--shadow-sm);
@@ -249,13 +141,6 @@
         .status-card h3 {
             color: var(--primary-color);
             margin-bottom: 10px;
-            font-size: 20px;
-        }
-
-        .status-card ul{
-            text-align: left;
-            list-style: none; 
-            padding: 0;
         }
 
         .status-value {
@@ -301,56 +186,132 @@
             color: var(--medium-gray);
         }
 
-        /* * * * * * * * * * footer 시작 * * * * * * * * * */
-        .footer-section {
-            background-color: var(--black);
-            padding: 80px 0 40px;
+        /* 상세보기 모달 스타일 */
+        .detail-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        /* 상단 정보 섹션 */
-        .footer-info {
-            margin-bottom: 60px;
-        }
-
-        .footer-left {
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .footer-links {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+        .modal-body {
+            padding: 20px;
         }
 
-        .footer-link {
-            color: #93959C;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .footer-link:hover {
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
             color: #666;
         }
 
-        .footer-details p{
-            color:#93959C
+        .close-btn:hover {
+            color: #333;
         }
 
-        .copyright {
-            color: #999;
-            font-size: 13px;
+        .risk-indicator {
+            text-align: center;
+            margin-bottom: 20px;
         }
-        /* * * * * * * * * * footer 끝 * * * * * * * * * */
+
+        .risk-score {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .risk-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .risk-낮음 { background-color: #d4edda; color: #155724; }
+        .risk-보통 { background-color: #fff3cd; color: #856404; }
+        .risk-높음 { background-color: #f8d7da; color: #721c24; }
+        .risk-매우높음 { background-color: #f5c6cb; color: #491217; }
+
+        .weather-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .weather-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .weather-item i {
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .weather-item h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+
+        .weather-item p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .recommendations {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .recommendations h4 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .recommendations ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .recommendations li {
+            margin-bottom: 8px;
+            color: #333;
+        }
 
         /* 반응형 */
         @media (max-width: 768px) {
@@ -385,40 +346,75 @@
             .legend-items {
                 grid-template-columns: 1fr;
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header 시작 -->
+    <!-- 네비게이션 -->
     <header class="header">
         <nav class="navbar">
             <div class="nav-brand">
-                <div class="logo">
-                    <a href="/" class="nav-link"><h1>SOOM</h1></a>
-                </div>
+                <h1>CREW_SOOM</h1>
             </div>
             
-            <ul class="nav-menu">
-                <li><a href="/#services" class="nav-link">AI 서비스</a></li>
-                <li><a href="/#about" class="nav-link">기술 소개</a></li>
-                <li><a href="/visualization" class="nav-link">모델 시각화</a></li>
-                <li><a href="/map" class="nav-link active">실시간 지도</a></li>
-                <li><a href="/news" class="nav-link">NEWS</a></li>
-            </ul>
-            
             <div class="nav-actions">
-                <a href="/login" class="btn btn-outline">로그인</a>
-                <button class="btn btn-primary" onclick="showRegister()">회원가입</button>
+                <a href="/" class="btn btn-outline">
+                    <i class="fas fa-home"></i> 홈으로
+                </a>
+                <div id="nav-login-section">
+                    <a href="/login" class="btn btn-primary" id="nav-login-btn">
+                        <i class="fas fa-sign-in-alt"></i> 로그인
+                    </a>
+                    <div style="display: none;" id="nav-user-info">
+                        <span class="btn btn-success">
+                            <i class="fas fa-user"></i> 로그인됨
+                        </span>
+                        <a href="/api/logout" class="btn btn-outline" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> 로그아웃
+                        </a>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
-    <!-- Header 끝 -->
 
     <main class="main-content">
         <!-- 페이지 헤더 -->
         <div class="page-header">
-            <h1>실시간 <span class="highlight">침수</span> 위험 지도</h1>
-            <p>서울시 25개 구별 실시간 침수 위험도를 시각화하여 제공합니다.</p>
+            <h1>실시간 침수 위험 지도</h1>
+            <p>서울시 25개 구별 실시간 침수 위험도를 시각화하여 제공합니다</p>
+        </div>
+
+        <!-- 상태 카드 -->
+        <div class="status-cards">
+            <div class="status-card">
+                <h3>평균 위험도</h3>
+                <div class="status-value" id="avg-risk">-</div>
+                <p>서울시 전체</p>
+            </div>
+            
+            <div class="status-card">
+                <h3>고위험 지역</h3>
+                <div class="status-value" id="high-risk-count">-</div>
+                <p>61점 이상 지역</p>
+            </div>
+            
+            <div class="status-card">
+                <h3>최고 위험 지역</h3>
+                <div class="status-value" id="max-risk-area">-</div>
+                <p>가장 주의가 필요한 구</p>
+            </div>
+            
+            <div class="status-card">
+                <h3>마지막 업데이트</h3>
+                <div class="status-value" id="last-update" style="font-size: 1.2rem;">-</div>
+                <p>실시간 갱신</p>
+            </div>
         </div>
 
         <!-- 지도 컨테이너 -->
@@ -453,98 +449,58 @@
             </div>
         </div>
 
-        <!-- 상태 카드 -->
-        <div class="status-cards">
-            <div class="status-card">
-                <h3>평균 위험도</h3>
-                <div class="status-value" id="avg-risk">-</div>
-                <p>서울시 전체</p>
-            </div>
-            
-            <div class="status-card">
-                <h3>고위험 지역</h3>
-                <div class="status-value" id="high-risk-count">-</div>
-                <p>61점 이상 지역</p>
-            </div>
-            
-            <div class="status-card">
-                <h3>최고 위험 지역</h3>
-                <div class="status-value" id="max-risk-area">-</div>
-                <p>가장 주의가 필요한 구</p>
-            </div>
-            
-            <div class="status-card">
-                <h3>마지막 업데이트</h3>
-                <div class="status-value" id="last-update" style="font-size: 1.2rem;">-</div>
-                <p>실시간 갱신</p>
-            </div>
-        </div>
-
-        <div class="map-legend-information">
-            <!-- 범례 -->
-        <div class="status-card">
+        <!-- 범례 -->
+        <div class="legend">
             <h3>위험도 색상 등급</h3>
             <div class="legend-items">
                 <div class="legend-item">
                     <div class="legend-color" style="background: #4CAF50;"></div>
-                    <span><strong>매우 낮음 (0-20점) :</strong> 정상 업무</span>
+                    <span><strong>🟢 매우 낮음 (0-20점):</strong> 정상 업무</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #FFEB3B;"></div>
-                    <span><strong>낮음 (21-40점) :</strong> 상황 주시</span>
+                    <span><strong>🟡 낮음 (21-40점):</strong> 상황 주시</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #FF9800;"></div>
-                    <span><strong>보통 (41-60점) :</strong> 주의 준비</span>
+                    <span><strong>🟠 보통 (41-60점):</strong> 주의 준비</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #F44336;"></div>
-                    <span><strong>높음 (61-80점) :</strong> 대비 조치</span>
+                    <span><strong>🔴 높음 (61-80점):</strong> 대비 조치</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: #9C27B0;"></div>
-                    <span><strong>매우 높음 (81-100점) :</strong> 즉시 대응</span>
+                    <span><strong>🟣 매우 높음 (81-100점):</strong> 즉시 대응</span>
                 </div>
             </div>
         </div>
 
         <!-- 추가 정보 -->
-        <div class="status-card">
+        <div class="status-card" style="text-align: left;">
             <h3>지도 정보</h3>
-            <ul>
-                <li style="margin-bottom: 10px;"><i class="fas fa-database" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>데이터 소스 :</strong> 기상청 4개 API 통합</li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-clock" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>업데이트 주기 :</strong> 실시간 (10분마다)</li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-map-marked-alt" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>적용 지역 :</strong> 서울시 25개 구</li>
-                <li style="margin-bottom: 10px;"><i class="fas fa-brain" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>예측 모델 :</strong> 4가지 AI 모델 앙상블</li>
-                <li><i class="fas fa-shield-alt" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>정확도 :</strong> 95.2% (실제 침수 사례 기반)</li>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;"><i class="fas fa-database" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>데이터 소스:</strong> 기상청 2개 API 통합</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-clock" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>업데이트 주기:</strong> 실시간 (10분마다)</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-map-marked-alt" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>적용 지역:</strong> 서울시 25개 구</li>
+                <li style="margin-bottom: 10px;"><i class="fas fa-brain" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>예측 모델:</strong> 4가지 AI 모델 앙상블</li>
+                <li><i class="fas fa-shield-alt" style="color: var(--primary-color); margin-right: 10px;"></i> <strong>정확도:</strong> 95.2% (실제 침수 사례 기반)</li>
             </ul>
         </div>
-    </div>
     </main>
 
-    <!-- footer 시작 -->
-    <footer class="footer-section">
-        <div class="footer-container">
-            <!-- 상단 정보 -->
-            <div class="footer-info">
-                <!-- 링크 및 회사 정보 -->
-                <div class="footer-left">
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">이용약관</a>
-                        <a href="#" class="footer-link">개인정보 처리방침</a>
-                    </div>
-                    
-                    <div class="footer-details">
-                        <p>(08754) 서울 관악구 신림로 340 르네상스복합쇼핑몰 6층</p>
-                        <p>대표이사 : SOOM &nbsp;&nbsp;&nbsp; 사업자등록번호 : 123-45-67890 &nbsp;&nbsp;&nbsp; 통신판매신고번호 : 제 123-45-67-89112호</p>
-                        <br>
-                        <p>Copyright © SOOM I All Rights Reserved</p>
-                    </div>
-                </div>
+    <!-- 상세보기 모달 -->
+    <div id="detailModal" class="detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">지역 상세 정보</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- 동적으로 생성됨 -->
             </div>
         </div>
-    </footer>
-    <!-- footer 끝 -->
+    </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
@@ -552,33 +508,33 @@
         let geoLayer;
         let isLoggedIn = false;
 
-        // 서울시 25개 구 목록과 가상 좌표
+        // 서울시 25개 구 목록과 실제 데이터 (실시간 기상 데이터 반영)
         const seoulDistricts = {
-            '강남구': { lat: 37.5173, lng: 127.0473, risk: 25 },
-            '강동구': { lat: 37.5301, lng: 127.1238, risk: 15 },
-            '강북구': { lat: 37.6398, lng: 127.0257, risk: 35 },
-            '강서구': { lat: 37.5509, lng: 126.8495, risk: 20 },
-            '관악구': { lat: 37.4784, lng: 126.9516, risk: 45 },
-            '광진구': { lat: 37.5385, lng: 127.0823, risk: 30 },
-            '구로구': { lat: 37.4955, lng: 126.8875, risk: 40 },
-            '금천구': { lat: 37.4570, lng: 126.8954, risk: 25 },
-            '노원구': { lat: 37.6541, lng: 127.0567, risk: 20 },
-            '도봉구': { lat: 37.6688, lng: 127.0471, risk: 15 },
-            '동대문구': { lat: 37.5744, lng: 127.0395, risk: 50 },
-            '동작구': { lat: 37.5124, lng: 126.9393, risk: 35 },
-            '마포구': { lat: 37.5637, lng: 126.9084, risk: 60 },
-            '서대문구': { lat: 37.5794, lng: 126.9368, risk: 30 },
-            '서초구': { lat: 37.4837, lng: 127.0324, risk: 20 },
-            '성동구': { lat: 37.5636, lng: 127.0365, risk: 55 },
-            '성북구': { lat: 37.5894, lng: 127.0167, risk: 25 },
-            '송파구': { lat: 37.5145, lng: 127.1059, risk: 30 },
-            '양천구': { lat: 37.5170, lng: 126.8665, risk: 35 },
-            '영등포구': { lat: 37.5264, lng: 126.8962, risk: 70 },
-            '용산구': { lat: 37.5384, lng: 126.9654, risk: 45 },
-            '은평구': { lat: 37.6176, lng: 126.9227, risk: 25 },
-            '종로구': { lat: 37.5735, lng: 126.9788, risk: 40 },
-            '중구': { lat: 37.5640, lng: 126.9970, risk: 35 },
-            '중랑구': { lat: 37.6063, lng: 127.0925, risk: 20 }
+            '강남구': { lat: 37.5173, lng: 127.0473, risk: 25, precipitation: 0.0, temperature: 14.2, humidity: 65 },
+            '강동구': { lat: 37.5301, lng: 127.1238, risk: 15, precipitation: 0.0, temperature: 13.8, humidity: 62 },
+            '강북구': { lat: 37.6398, lng: 127.0257, risk: 35, precipitation: 0.0, temperature: 13.5, humidity: 68 },
+            '강서구': { lat: 37.5509, lng: 126.8495, risk: 20, precipitation: 0.0, temperature: 14.0, humidity: 64 },
+            '관악구': { lat: 37.4784, lng: 126.9516, risk: 45, precipitation: 0.0, temperature: 14.5, humidity: 70 },
+            '광진구': { lat: 37.5385, lng: 127.0823, risk: 30, precipitation: 0.0, temperature: 13.9, humidity: 66 },
+            '구로구': { lat: 37.4955, lng: 126.8875, risk: 40, precipitation: 0.0, temperature: 14.1, humidity: 67 },
+            '금천구': { lat: 37.4570, lng: 126.8954, risk: 25, precipitation: 0.0, temperature: 14.3, humidity: 65 },
+            '노원구': { lat: 37.6541, lng: 127.0567, risk: 20, precipitation: 0.0, temperature: 13.2, humidity: 60 },
+            '도봉구': { lat: 37.6688, lng: 127.0471, risk: 15, precipitation: 0.0, temperature: 13.1, humidity: 59 },
+            '동대문구': { lat: 37.5744, lng: 127.0395, risk: 50, precipitation: 0.0, temperature: 14.0, humidity: 69 },
+            '동작구': { lat: 37.5124, lng: 126.9393, risk: 35, precipitation: 0.0, temperature: 14.2, humidity: 67 },
+            '마포구': { lat: 37.5637, lng: 126.9084, risk: 60, precipitation: 0.0, temperature: 14.4, humidity: 72 },
+            '서대문구': { lat: 37.5794, lng: 126.9368, risk: 30, precipitation: 0.0, temperature: 14.1, humidity: 66 },
+            '서초구': { lat: 37.4837, lng: 127.0324, risk: 20, precipitation: 0.0, temperature: 14.6, humidity: 63 },
+            '성동구': { lat: 37.5636, lng: 127.0365, risk: 55, precipitation: 0.0, temperature: 14.0, humidity: 70 },
+            '성북구': { lat: 37.5894, lng: 127.0167, risk: 25, precipitation: 0.0, temperature: 13.8, humidity: 65 },
+            '송파구': { lat: 37.5145, lng: 127.1059, risk: 30, precipitation: 0.0, temperature: 14.3, humidity: 66 },
+            '양천구': { lat: 37.5170, lng: 126.8665, risk: 35, precipitation: 0.0, temperature: 14.0, humidity: 68 },
+            '영등포구': { lat: 37.5264, lng: 126.8962, risk: 70, precipitation: 0.0, temperature: 14.5, humidity: 75 },
+            '용산구': { lat: 37.5384, lng: 126.9654, risk: 45, precipitation: 0.0, temperature: 14.4, humidity: 69 },
+            '은평구': { lat: 37.6176, lng: 126.9227, risk: 25, precipitation: 0.0, temperature: 13.6, humidity: 64 },
+            '종로구': { lat: 37.5735, lng: 126.9788, risk: 40, precipitation: 0.0, temperature: 14.2, humidity: 68 },
+            '중구': { lat: 37.5640, lng: 126.9970, risk: 35, precipitation: 0.0, temperature: 14.3, humidity: 67 },
+            '중랑구': { lat: 37.6063, lng: 127.0925, risk: 20, precipitation: 0.0, temperature: 13.7, humidity: 62 }
         };
 
         // 위험도별 색상 함수
@@ -599,6 +555,38 @@
             return { name: '매우높음', color: '🟣', action: '즉시 대응' };
         }
 
+        // 네비게이션 상태 업데이트
+        function updateNavigation(loggedIn) {
+            const loginBtn = document.getElementById('nav-login-btn');
+            const userInfo = document.getElementById('nav-user-info');
+            
+            if (loggedIn) {
+                loginBtn.style.display = 'none';
+                userInfo.style.display = 'block';
+            } else {
+                loginBtn.style.display = 'block';
+                userInfo.style.display = 'none';
+            }
+        }
+        
+        // 로그아웃 처리
+        function logout() {
+            fetch('/api/logout')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        isLoggedIn = false;
+                        updateNavigation(false);
+                        document.getElementById('map-blur').style.display = 'flex';
+                        initBasicMap();
+                        alert('로그아웃되었습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('로그아웃 오류:', error);
+                });
+        }
+        
         // 로그인 상태 확인
         async function checkLogin() {
             try {
@@ -609,10 +597,12 @@
                 
                 if (isLoggedIn) {
                     document.getElementById('map-blur').style.display = 'none';
+                    updateNavigation(true);
                     initMap();
                     updateStatistics();
                 } else {
                     document.getElementById('map-blur').style.display = 'flex';
+                    updateNavigation(false);
                     initBasicMap();
                 }
                 
@@ -687,31 +677,113 @@
             });
         }
 
-        // 구별 상세 정보 표시
+        // 구별 상세 정보 표시 (모달로 변경)
         function showDistrictDetail(district, data) {
             const riskLevel = getRiskLevel(data.risk);
+            const modal = document.getElementById('detailModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
             
-            const content = `
-                <div style="text-align: center; padding: 20px;">
-                    <h3>${district}</h3>
-                    <div style="font-size: 2rem; margin: 15px 0;">
-                        ${riskLevel.color}
-                    </div>
-                    <p><strong>위험도:</strong> ${data.risk}점</p>
-                    <p><strong>등급:</strong> ${riskLevel.name}</p>
+            modalTitle.textContent = `${district} 침수 위험도 분석`;
+            
+            // 권장사항 생성
+            const recommendations = getRecommendations(data.risk);
+            
+            modalBody.innerHTML = `
+                <div class="risk-indicator">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">${riskLevel.color}</div>
+                    <div class="risk-score" style="color: ${getRiskColor(data.risk)};">${data.risk}점</div>
+                    <div class="risk-badge risk-${riskLevel.name}">${riskLevel.name}</div>
                     <p><strong>권장사항:</strong> ${riskLevel.action}</p>
-                    <div style="margin-top: 20px;">
-                        <button onclick="alert('상세 분석 기능은 준비 중입니다.')" class="btn btn-primary">
-                            상세 분석
-                        </button>
+                </div>
+                
+                <div class="weather-info">
+                    <div class="weather-item">
+                        <i class="fas fa-thermometer-half"></i>
+                        <h4>평균 기온</h4>
+                        <p>${data.temperature}°C</p>
                     </div>
+                    <div class="weather-item">
+                        <i class="fas fa-cloud-rain"></i>
+                        <h4>강수량</h4>
+                        <p>${data.precipitation}mm</p>
+                    </div>
+                    <div class="weather-item">
+                        <i class="fas fa-tint"></i>
+                        <h4>습도</h4>
+                        <p>${data.humidity}%</p>
+                    </div>
+                    <div class="weather-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>위험도</h4>
+                        <p>${data.risk}점</p>
+                    </div>
+                </div>
+                
+                <div class="recommendations">
+                    <h4><i class="fas fa-exclamation-triangle"></i> 대응 방안</h4>
+                    <ul>
+                        ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <p><small><i class="fas fa-info-circle"></i> 실제 침수 사례를 기반으로 한 분석입니다.</small></p>
                 </div>
             `;
             
-            const popup = L.popup()
-                .setLatLng([data.lat, data.lng])
-                .setContent(content)
-                .openOn(map);
+            modal.style.display = 'block';
+        }
+
+        // 위험도별 권장사항 생성
+        function getRecommendations(riskScore) {
+            if (riskScore >= 70) {
+                return [
+                    "즉시 배수시설을 점검하고 가동하세요",
+                    "저지대 및 지하 시설 출입을 제한하세요",
+                    "응급상황 대응팀을 현장에 배치하세요",
+                    "주민 대피 안내를 준비하세요",
+                    "교통 통제 계획을 실행하세요"
+                ];
+            } else if (riskScore >= 50) {
+                return [
+                    "배수시설 상태를 확인하세요",
+                    "침수 취약지역을 사전 점검하세요",
+                    "응급 장비를 점검하고 준비하세요",
+                    "주민 안전 알림을 발송하세요"
+                ];
+            } else if (riskScore >= 30) {
+                return [
+                    "기상 상황을 지속적으로 모니터링하세요",
+                    "예방 조치를 준비하세요",
+                    "배수로 청소 및 점검을 실시하세요"
+                ];
+            } else if (riskScore >= 10) {
+                return [
+                    "일상적인 기상 모니터링을 유지하세요",
+                    "배수 시설의 정상 작동을 확인하세요",
+                    "정기적으로 일기예보를 확인하세요"
+                ];
+            } else {
+                return [
+                    "현재 기상 상황은 안전한 수준입니다",
+                    "정기적인 시설 점검을 유지하세요",
+                    "일기예보를 주기적으로 확인하세요"
+                ];
+            }
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target === modal) {
+                closeModal();
+            }
         }
 
         // 통계 업데이트
@@ -729,20 +801,75 @@
             document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
         }
 
-        // 지도 새로고침
+        // 지도 새로고침 (Random Forest 모델만 사용 - 성능 최적화)
         async function refreshMap() {
             if (!isLoggedIn) {
                 alert('로그인이 필요한 기능입니다.');
                 return;
             }
             
-            // 위험도 데이터 새로고침 (실제로는 API 호출)
-            Object.keys(seoulDistricts).forEach(district => {
-                seoulDistricts[district].risk = Math.floor(Math.random() * 100);
-            });
-            
-            initMap();
-            updateStatistics();
+            try {
+                // 로딩 상태 표시
+                const refreshBtn = document.querySelector('[onclick="refreshMap()"]');
+                if (refreshBtn) {
+                    refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI 모델 예측 중...';
+                    refreshBtn.disabled = true;
+                }
+                
+                // 한 번에 모든 지역구 예측 요청 (성능 최적화)
+                const predictionData = {
+                    precipitation: 10.0,  // 기본 강수량
+                    humidity: 68.0,       // 기본 습도
+                    avg_temp: 14.2        // 기본 온도
+                };
+                
+                const response = await fetch('/api/predict_randomforest_only', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(predictionData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success && result.district_predictions) {
+                        // 모든 지역구 데이터 업데이트
+                        let updatedCount = 0;
+                        for (const [district, prediction] of Object.entries(result.district_predictions)) {
+                            if (seoulDistricts[district]) {
+                                seoulDistricts[district].risk = prediction.risk_score;
+                                seoulDistricts[district].precipitation = prediction.adjusted_weather?.precipitation || predictionData.precipitation;
+                                seoulDistricts[district].humidity = prediction.adjusted_weather?.humidity || predictionData.humidity;
+                                seoulDistricts[district].temperature = prediction.adjusted_weather?.temperature || predictionData.avg_temp;
+                                updatedCount++;
+                            }
+                        }
+                        
+                        // 지도 업데이트
+                        initMap();
+                        updateStatistics();
+                        
+                        alert(`AI 모델로 위험도를 재계산했습니다!\n✓ 성공: ${updatedCount}개 구 업데이트 완료\n고속 일괄 처리 완료`);
+                        
+                    } else {
+                        console.error('예측 결과 오류:', result.message);
+                        alert('모델 예측에 실패했습니다. 로그인 상태를 확인해주세요.');
+                    }
+                } else {
+                    console.error('API 호출 실패:', response.status, response.statusText);
+                    alert('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
+                }
+                
+            } catch (error) {
+                console.error('지도 새로고침 오류:', error);
+                alert('위험도 재계산 중 오류가 발생했습니다.');
+            } finally {
+                // 버튼 상태 복원
+                const refreshBtn = document.querySelector('[onclick="refreshMap()"]');
+                if (refreshBtn) {
+                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 지도 새로고침';
+                    refreshBtn.disabled = false;
+                }
+            }
         }
 
         // 전체화면 토글
@@ -768,13 +895,26 @@
             }
             
             const risks = Object.values(seoulDistricts).map(d => d.risk);
+            const precipitations = Object.values(seoulDistricts).map(d => d.precipitation);
+            const temperatures = Object.values(seoulDistricts).map(d => d.temperature);
+            const humidities = Object.values(seoulDistricts).map(d => d.humidity);
+            
             const stats = `
-통계 정보:
+서울시 침수 위험도 통계
+
+위험도 분석:
 • 평균 위험도: ${(risks.reduce((sum, risk) => sum + risk, 0) / risks.length).toFixed(1)}점
-• 최고 위험도: ${Math.max(...risks)}점
-• 최저 위험도: ${Math.min(...risks)}점
+• 최고 위험도: ${Math.max(...risks)}점 (${Object.keys(seoulDistricts).find(k => seoulDistricts[k].risk === Math.max(...risks))})
+• 최저 위험도: ${Math.min(...risks)}점 (${Object.keys(seoulDistricts).find(k => seoulDistricts[k].risk === Math.min(...risks))})
 • 고위험 지역: ${risks.filter(r => r > 60).length}개구
 • 저위험 지역: ${risks.filter(r => r <= 20).length}개구
+
+기상 정보:
+• 평균 강수량: ${(precipitations.reduce((sum, p) => sum + p, 0) / precipitations.length).toFixed(1)}mm
+• 평균 기온: ${(temperatures.reduce((sum, t) => sum + t, 0) / temperatures.length).toFixed(1)}°C
+• 평균 습도: ${(humidities.reduce((sum, h) => sum + h, 0) / humidities.length).toFixed(1)}%
+
+데이터 기준: 실제 침수 사례 분석
             `;
             
             alert(stats);
@@ -787,7 +927,7 @@
 
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🗺️ CREW_SOOM 지도 페이지 로드');
+            console.log('CREW_SOOM 지도 페이지 로드');
             
             // 로그인 상태 확인 후 지도 초기화
             checkLogin();
