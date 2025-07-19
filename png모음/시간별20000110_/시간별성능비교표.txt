@@ -1,0 +1,27 @@
+성능비교표
+     Model       Accuracy     Recall    ROC AUC
+RandomForest    0.9247      0.8279    0.9680
+XGBoost           0.9299      0.7090    0.9618
+LSTM+CNN        0.9459      0.4190    0.8976
+Transformer       0.9624      0.9413    0.9874
+
+
+분석 요약
+      모델          Precision       Recall      F1-score     ROC AUC
+RandomForest     0.5580        0.8279       0.6667       0.9680
+XGBoost            0.5966        0.7090        0.6479       0.9618
+LSTM+CNN         0.1933        0.4190       0.2645       0.8976
+Transformer        0.2219        0.9413        0.3591       0.9874
+ 해석 요약
+Transformer: 압도적 Recall과 ROC AUC로 침수 탐지에 가장 뛰어난 성능.
+
+RandomForest: 좋은 Accuracy와 Recall 균형.
+
+XGBoost: Accuracy 높고, 침수 탐지 능력은 중간 수준.
+
+LSTM+CNN: Accuracy는 높지만 침수 탐지 성능은 낮음 (Recall 낮음).
+목적                          추천 모델                 이유
+홍수 탐지 민감도 (recall)    RandomForest/XGBoost    실질적인 위험 탐지에 유리
+정확도 + general 성능        Transformer (SMOTE 적용)    높은 AUC와 Accuracy
+실시간 예측 속도             RandomForest             예측 빠름, 연산 적음
+시계열 특화                  Transformer               과거 시간 정보 반영

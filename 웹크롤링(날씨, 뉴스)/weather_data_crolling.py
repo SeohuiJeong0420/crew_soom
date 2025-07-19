@@ -40,7 +40,7 @@ class WeatherDataCrolling:
                 weather_data['현재온도'] = "정보 없음"
             
             # 날씨 상태
-            weather_element = soup.select_one('.summary_list .sort')
+            weather_element = soup.select_one('.summary_list .sort:nth-child(1) .desc')
             if weather_element:
                 weather_data['날씨상태'] = weather_element.get_text().strip()
             else:
@@ -53,8 +53,8 @@ class WeatherDataCrolling:
             else:
                 weather_data['날씨상세'] = "정보 없음"
             
-            # 강수량(수정필요)
-            precipitation = soup.select_one('.summary_list .sort')
+            # 강수량
+            precipitation = soup.select_one('.summary_list .sort:nth-child(2) .desc')
             if temp_element:
                 weather_data['강수량'] = precipitation.get_text().strip()
             else:
@@ -86,7 +86,7 @@ class WeatherDataCrolling:
     def save_today_weather(weather_data):
         """오늘 날씨를 고정 파일명으로 업데이트"""
         
-        filename = "오늘날씨.xlsx"  # 항상 같은 파일명
+        filename = "today_data/오늘날씨.xlsx"  # 항상 같은 파일명
         
         if weather_data:
             # 새 데이터를 DataFrame으로 변환
