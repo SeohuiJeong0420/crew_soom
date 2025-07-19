@@ -166,6 +166,7 @@ POST /api/predict_advanced # 앙상블 예측(메인)
 ### 프로젝트 구조
 
 ```
+
 CREW_SOOM/
 ├── data/                          # 데이터 저장소
 │   ├── asos_seoul_daily.csv          # 원본 일별 기상 데이터
@@ -225,7 +226,8 @@ CREW_SOOM/
 ├── readme.md                      # 프로젝트 설명서
 ├── .env                           # 환경 변수 설정
 ├── .gitignore                     # Git 무시 파일 목록
-└── 설계구조도.txt                 
+└── 설계구조도.txt 
+
 ```
 
 ### 데이터 플로우
