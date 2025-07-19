@@ -1,4 +1,4 @@
-# 🌊 CREW_SOOM v2.0 - 고급 AI 침수 예측 플랫폼
+# CREW_SOOM v2.0 - 고급 AI 침수 예측 플랫폼
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.13-orange.svg)](https://tensorflow.org)
