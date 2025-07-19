@@ -1,0 +1,85 @@
+<!-- templates/models.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>모델 비교</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="header">
+    <h1>🤖 머신러닝 모델 비교</h1>
+    <p id="selected-model-info">현재 사용 중인 모델: 로딩 중...</p>
+  </div>
+
+  <div class="container">
+    <canvas id="compareChart" style="max-height: 400px;"></canvas>
+    <div id="model-buttons" class="function-buttons" style="margin-top:30px;"></div>
+  </div>
+
+  <script>
+    async function fetchStatus() {
+      const res = await fetch('/api/status');
+      const data = await res.json();
+      document.getElementById('selected-model-info').textContent =
+        `현재 사용 중인 모델: ${data.current_model_name}`;
+    }
+
+    async function fetchModelComparison() {
+      const res = await fetch('/api/model_compare');
+      const result = await res.json();
+
+      if (result.success) {
+        const metrics = ['AUC', 'Precision', 'Recall', 'F1'];
+        const labels = Object.keys(result.results);
+        const datasets = metrics.map((metric, idx) => ({
+          label: metric,
+          data: labels.map(model => result.results[model][metric]),
+          backgroundColor: `hsl(${idx * 80}, 70%, 60%)`
+        }));
+
+        new Chart(document.getElementById('compareChart'), {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'top' },
+              title: { display: true, text: '모델 성능 비교 (AUC, Precision, Recall, F1)' }
+            }
+          }
+        });
+
+        const buttons = labels.map(name =>
+          `<button class="btn btn-info" onclick="selectModel('${name}')">${name} 모델 사용하기</button>`
+        );
+        document.getElementById('model-buttons').innerHTML = buttons.join('');
+      } else {
+        alert('모델 비교 실패: ' + result.message);
+      }
+    }
+
+    async function selectModel(name) {
+      const res = await fetch('/api/select_model', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      });
+      const result = await res.json();
+      if (result.success) {
+        alert(result.message);
+        fetchStatus();
+      } else {
+        alert(result.message);
+      }
+    }
+
+    fetchStatus();
+    fetchModelComparison();
+  </script>
+</body>
+</html>

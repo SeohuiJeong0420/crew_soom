@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>관리자 로그</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border-bottom: 1px solid #ccc; text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📋 관리자 로그</h1>
+    <p>로그인, 예측 요청, 모델 변경 등의 이벤트 기록</p>
+  </div>
+
+  <div class="container">
+    <table>
+      <thead>
+        <tr><th>시간</th><th>유형</th><th>설명</th></tr>
+      </thead>
+      <tbody id="log-body"></tbody>
+    </table>
+  </div>
+
+  <script>
+    async function fetchLogs() {
+      const res = await fetch('/api/get_logs');
+      const logs = await res.json();
+
+      const rows = logs.map(log => `
+        <tr>
+          <td>${log.time}</td>
+          <td>${log.type}</td>
+          <td>${log.message}</td>
+        </tr>
+      `);
+      document.getElementById('log-body').innerHTML = rows.join('');
+    }
+
+    fetchLogs();
+  </script>
+</body>
+</html>
