@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 soom_참조자료/
 오픈api활용가이드/
 .gitignore
@@ -6,3 +7,16 @@ soom_참조자료/
 오픈api활용가이드/
 .gitignore/
 crew_soom_ml.zip
+=======
+data/
+crew_soom_ml/"crew_soom_ml/X_seq.npy" 
+"crew_soom_ml/X_seq.npy" 
+"*.npy" 
+"crew_soom_ml/X_seq.npy" 
+CREW_SOOM/
+crew_soom/
+soom_참조자료/
+오픈api활용가이드/
+.gitignore
+웹(시연)/
+>>>>>>> 1433c7be80b9d2d7bb14ef06a682e67d8cdfd849
