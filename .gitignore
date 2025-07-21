@@ -1,4 +1,8 @@
-
+data/
+crew_soom_ml/"crew_soom_ml/X_seq.npy" 
+"crew_soom_ml/X_seq.npy" 
+"*.npy" 
+"crew_soom_ml/X_seq.npy" 
 CREW_SOOM/
 crew_soom/
 soom_참조자료/
