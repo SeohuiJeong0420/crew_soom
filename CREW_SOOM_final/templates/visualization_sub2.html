@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOOM - 대한민국 NO.1 AI 침수 예측 플랫폼</title>
+    <link rel="soom icon" href="static/images/logo/favicon.ico">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+        /* Elancer 스타일 기반 CSS */
+        :root {
+            --primary-color: #2c5ff7;
+            --primary-dark: #1a4ae6;
+            --secondary-color: #4a90e2;
+            --accent-color: #00d4aa;
+            --success-color: #00c851;
+            --warning-color: #ffbb33;
+            --danger-color: #ff4444;
+            --white: #ffffff;
+            --light-gray: #f8f9fc;
+            --medium-gray: #8492a6;
+            --dark-gray: #273444;
+            --black: #1a202c;
+            
+            --gradient-primary: linear-gradient(135deg, #2c5ff7 0%, #4a90e2 100%);
+            --gradient-success: linear-gradient(135deg, #00c851 0%, #00d4aa 100%);
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            
+            --shadow-sm: 0 2px 4px rgba(44, 95, 247, 0.08);
+            --shadow-md: 0 4px 12px rgba(44, 95, 247, 0.15);
+            --shadow-lg: 0 8px 25px rgba(44, 95, 247, 0.2);
+            
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* * * * * * * * * * Header nav 시작 * * * * * * * * * */
+        .header {
+            background: var(--white);
+            /*box-shadow: var(--shadow-sm);*/
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(44, 95, 247, 0.08);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand .logo a{
+            text-decoration: none;
+        }
+
+        .nav-brand h1 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'NanumSquareExtraBold';
+            margin: 0;
+        }
+
+        .nav-brand .subtitle {
+            font-size: 0.875rem;
+            color: var(--medium-gray);
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 12px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: bold;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            /*color: var(--primary-color);
+            background: rgba(44, 95, 247, 0.08);*/
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* 드롭다운 스타일 */
+        .nav-item.dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 130%;
+            left: -30px;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 8px 0;
+            margin-top: 4px;
+            z-index: 1000;
+            list-style-type: none;
+        }
+
+        .dropdown-menu li{
+            text-align: center;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu::marker{
+            content: none;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item li a{
+            text-decoration: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+        }
+
+        .dropdown-toggle::after {
+            content: "▼";
+            font-size: 12px;
+            margin-left: 8px;
+            transition: transform 0.2s;
+            display: none;
+            cursor: pointer;
+        }
+
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(180deg);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            /*box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);*/
+        }
+
+        .btn-primary:hover {
+            /*transform: translateY(-2px);*/
+            /*box-shadow: var(--shadow-lg);*/
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: var(--white);
+        }
+
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: var(--border-radius-lg);
+        }
+
+        /* Additional Elancer-style components */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: var(--border-radius);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-connected {
+            background: rgba(0, 200, 81, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-disconnected {
+            background: rgba(255, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .scenario-btn {
+            padding: 12px 16px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .model-comparison-card {
+            grid-column: 1 / -1;
+        }
+        /* * * * * * * * * * Header nav 끝* * * * * * * * * */
+
+        /* 상단 네비게이션 - 원본과 동일한 스타일 */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* 상단 네비게이션 title */
+        .page-header{
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            /*-webkit-text-fill-color: transparent;*/
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 1.6;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .page-header .highlight {
+            color: var(--primary-color);
+        }
+
+        #tab-randomforest, #tab-xgboost, #tab-lstm, #tab-transformer {
+            display: none;
+        }
+
+        .nav-btn {
+            background-color: #ffffff;
+            color: #666;
+            border: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background-color: #f5f5f5;
+            border-color: #d0d0d0;
+        }
+
+        .nav-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        /* 상단 네비게이션 title */
+        .page-header{
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 1.6;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .page-header .highlight {
+            color: var(--primary-color);
+        }
+
+        /* 탭 시스템 - 라디오 버튼 숨기기 */
+        .tab-container {
+            margin-bottom: 40px;
+        }
+
+        .tab-container input[type="radio"] {
+            display: none;
+        }
+
+        /* RandomForest 탭 강조 스타일 */
+        input[type="radio"]:checked + .tab-label {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(44, 95, 247, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* 탭 호버 효과 개선 */
+        .tab-label:hover {
+            background-color: #f0f4ff;
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab-label {
+            background-color: #ffffff;
+            color: #666;
+            border: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .tab-label:hover {
+            background-color: #f5f5f5;
+            border-color: #d0d0d0;
+        }
+
+        /* 라디오 버튼이 체크되었을 때 스타일 */
+        input[type="radio"]:checked + .tab-label {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        /* 탭 버튼 기본 스타일 강제 적용 */
+        .tab-label {
+            background-color: #ffffff !important;
+            color: #666 !important;
+            border: 1px solid #e0e0e0 !important;
+        }
+
+        /* 선택된 탭 스타일 강제 적용 */
+        input[type="radio"]:checked + .tab-label {
+            background: linear-gradient(135deg, #2c5ff7 0%, #4f46e5 100%) !important;
+            color: white !important;
+            border-color: #2c5ff7 !important;
+        }
+
+        /* 호버 효과 */
+        .tab-label:hover {
+            background-color: #f5f5f5 !important;
+            border-color: #d0d0d0 !important;
+        }
+
+        /* 선택된 탭의 호버는 그대로 유지 */
+        input[type="radio"]:checked + .tab-label:hover {
+            background: linear-gradient(135deg, #2c5ff7 0%, #4f46e5 100%) !important;
+            color: white !important;
+        }
+
+        /* 탭 콘텐츠 숨김 */
+        .tab-content {
+            display: none;
+        }
+
+        /* 해당 라디오 버튼이 체크되었을 때만 콘텐츠 표시 */
+        #tab-randomforest:checked ~ .content #content-randomforest,
+        #tab-xgboost:checked ~ .content #content-xgboost,
+        #tab-lstm:checked ~ .content #content-lstm,
+        #tab-transformer:checked ~ .content #content-transformer {
+            display: block;
+        }
+
+        /* 메인 배너 - 원본과 동일한 그라디언트 */
+        .main-banner {
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius-xl);
+            padding: 80px 60px;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .main-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, 50%);
+        }
+
+        .main-banner h1 {
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-banner p {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+        }
+
+        /* 시각화 섹션 */
+        .visualization-section {
+            margin-top: 60px;
+            padding: 0px 40px;
+            /*background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);*/
+        }
+
+        .visualization-title {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 0px;
+            text-align: center;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .chart {
+            /*width: 100%;
+            height: 250px;*/
+            background: white;
+            border-radius: var(--border-radius-lg);
+            /*display: flex;*/
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .chart img{
+            border-radius: var(--border-radius-lg);
+        }
+
+        /* 숨김 처리 */
+        .hidden {
+            display: none;
+        }
+
+        /* 플레이스홀더 이미지 스타일 */
+        .placeholder-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: var(--border-radius-lg);
+        }
+
+        /* 로딩 애니메이션 */
+        .loading {
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        /* * * * * * * * * * footer 시작 * * * * * * * * * */
+        .footer-section {
+            background-color: var(--black);
+            padding: 80px 0 40px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 상단 정보 섹션 */
+        .footer-info {
+            margin-bottom: 60px;
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #93959C;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #666;
+        }
+
+        .footer-details p{
+            color:#93959C
+        }
+
+        .copyright {
+            color: #999;
+            font-size: 13px;
+        }
+        /* * * * * * * * * * footer 끝 * * * * * * * * * */
+    </style>
+</head>
+<body>
+
+    <!-- Header 시작 -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo">
+                    <a href="/" class="nav-link active"><h1>SOOM</h1></a>
+                </div>
+                <!--<div class="subtitle">대한민국 NO.1 AI 침수 예측 플랫폼</div>-->
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="#about" class="nav-link">기술 소개</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" onclick="toggleDropdown(event)" aria-expanded="false">
+                        모델 분석
+                    </a>
+                    <ul class="dropdown-menu" id="modelHistoryDropdown">
+                        <li><a href="/visualization_sub" class="dropdown-item" style="text-decoration: none;">시간별</a></li>
+                        <li><a href="/visualization_sub2" class="dropdown-item" style="text-decoration: none;">일별</a></li>
+                    </ul>
+                </li>
+                <li><a href="/map" class="nav-link">실시간 지도</a></li>
+                <li><a href="/news" class="nav-link">NEWS</a></li>
+                <li><a href="/user_model" class="nav-link">침수 예측</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <a href="/login" class="btn btn-outline">로그인</a>
+                <button class="btn btn-primary" onclick="showRegister()">회원가입</button>
+            </div>
+        </nav>
+    </header>
+    <!-- Header 끝 -->
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1><span class="highlight">일별</span> 모델링 시각화</h1>
+            <p>서울시 25개 구별 실시간 침수 위험도를 일별로 시각화하여 제공합니다.</p>
+        </div>
+
+        <!-- 라디오 버튼들 -->
+        <input type="radio" name="model-tab" id="tab-randomforest" checked>
+        <input type="radio" name="model-tab" id="tab-xgboost">
+        <input type="radio" name="model-tab" id="tab-lstm">
+        <input type="radio" name="model-tab" id="tab-transformer">
+
+        <!-- 탭 버튼들 -->
+        <div class="tab-buttons">
+            <label for="tab-randomforest" class="tab-label active">RandomForest</label>
+            <label for="tab-xgboost" class="tab-label">XGBoost</label>
+            <label for="tab-lstm" class="tab-label">LSTM+CNN</label>
+            <label for="tab-transformer" class="tab-label">Transformer</label>
+        </div>
+
+        <!-- 탭 콘텐츠들 -->
+            <div class="content">
+                <!-- RandomForest 콘텐츠 -->
+                <div id="content-randomforest" class="tab-content">
+                    <div class="main-banner">
+                        <h1>RandomForest</h1>
+                        <p>RandomForest 모델은 임베딩 학습을 위한 정보 분석 및 예측 모델입니다.</p>
+                    </div>
+
+                    <section class="visualization-section">
+                        <h2 class="visualization-title">RandomForest 성능 분석</h2>
+                        
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/rf_CONFUSION_MATRIX.png" alt="rf_CONFUSION_MATRIX" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">CONFUSION_MATRIX</h3>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/rf_ROC_CURVE.png" alt="rf_ROC_CURVE" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">ROC_CURVE</h3>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/모델성능비교.png" alt="성능비교표" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">성능비교표</h3>
+                            </div>
+                            
+                            <!--<div class="chart-container">
+                                <div class="chart">
+                                    <div class="placeholder-image">RandomForest 예측 정확도</div>
+                                </div>
+                                <h3 class="chart-title">RF 예측 정확도</h3>
+                            </div>-->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- XGBoost 콘텐츠 -->
+                <div id="content-xgboost" class="tab-content">
+                    <div class="main-banner">
+                        <h1>XGBoost</h1>
+                        <p>XGBoost는 Gradient Boosting 기반의 고성능 머신러닝 모델로, 뛰어난 예측 성능을 제공합니다.</p>
+                    </div>
+
+                    <section class="visualization-section">
+                        <h2 class="visualization-title">XGBoost 성능 분석</h2>
+                        
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/xg_CONFUSION_MATRIX.png" alt="xg_CONFUSION_MATRIX" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">CONFUSION_MATRIX</h3>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/xg_PRECISION_RECALL.png" alt="xg_PRECISION_RECALL" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">PRECISION_RECALL</h3>
+                            </div>
+
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/xg_ROC_CURVE.png" alt="xg_ROC_CURVE" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">ROC_CURVE</h3>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/모델성능비교.png" alt="성능비교표" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">성능비교표</h3>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- LSTM+CNN 콘텐츠 -->
+                <div id="content-lstm" class="tab-content">
+                    <div class="main-banner">
+                        <h1>LSTM+CNN</h1>
+                        <p>LSTM과 CNN을 결합한 딥러닝 모델로, 시계열 데이터의 시간적 패턴과 공간적 특성을 동시에 학습합니다.</p>
+                    </div>
+
+                    <section class="visualization-section">
+                        <h2 class="visualization-title">LSTM+CNN 성능 분석</h2>
+                        
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/LSTM_CNN_CONFUSION_MATRIX.png" alt="LSTM_CNN_CONFUSION_MATRIX" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">CONFUSION_MATRIX</h3>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/LSTM_CNN_PRECISION_RECALL.png" alt="LSTM_CNN_PRICISION_RECALL" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">PRICISION_RECALL</h3>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/LSTM_CNN_ROC_CURVE.png" alt="LSTM_CNN_ROC_CURVE" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">ROC_CURVE</h3>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart">
+                                    <img src="static/images/daily/모델성능비교.png" alt="성능비교표" style="width: 100%; padding: 15px;">
+                                </div>
+                                <h3 class="chart-title">성능비교표</h3>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Transformer 콘텐츠 -->
+                <div id="content-transformer" class="tab-content">
+                    <div class="main-banner">
+                        <h1>Transformer</h1>
+                        <p>Transformer 모델은 어텐션 메커니즘을 활용하여 시계열 데이터의 장기 의존성을 효과적으로 학습합니다.</p>
+                    </div>
+
+                    <section class="visualization-section">
+                        <h2 class="visualization-title">Transformer 성능 분석</h2>
+                            <div class="charts-grid">
+
+                                <div class="chart-container">
+                                    <div class="chart">
+                                        <img src="static/images/daily/trans_ROC_CURVE.png" alt="trans_ROC_CURVE" style="width: 100%; padding: 15px;">
+                                    </div>
+                                    <h3 class="chart-title">ROC_CURVE</h3>
+                                </div>
+                            
+                                <div class="chart-container">
+                                    <div class="chart">
+                                        <img src="static/images/daily/모델성능비교.png" alt="성능비교표" style="width: 100%; padding: 15px;">
+                                    </div>
+                                    <h3 class="chart-title">성능비교표</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+    </div>
+
+    <!-- footer 시작 -->
+    <footer class="footer-section">
+        <div class="footer-container">
+            <!-- 상단 정보 -->
+            <div class="footer-info">
+                <!-- 링크 및 회사 정보 -->
+                <div class="footer-left">
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">이용약관</a>
+                        <a href="#" class="footer-link">개인정보 처리방침</a>
+                    </div>
+                    
+                    <div class="footer-details">
+                        <p>(08754) 서울 관악구 신림로 340 르네상스복합쇼핑몰 6층</p>
+                        <p>대표이사 : SOOM &nbsp;&nbsp;&nbsp; 사업자등록번호 : 123-45-67890 &nbsp;&nbsp;&nbsp; 통신판매신고번호 : 제 123-45-67-89112호</p>
+                        <br>
+                        <p>Copyright © SOOM I All Rights Reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer 끝 -->
+    
+    <script src="/static/js/dashboard.js"></script>
+    <script>
+        // 드롭다운 토글 함수
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdown = document.getElementById('modelHistoryDropdown');
+            const toggle = event.target;
+            
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                toggle.setAttribute('aria-expanded', 'false');
+            } else {
+                dropdown.classList.add('show');
+                toggle.setAttribute('aria-expanded', 'true');
+            }
+        }
+    </script>
+</body>
+</html>
