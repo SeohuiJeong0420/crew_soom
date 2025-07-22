@@ -551,7 +551,8 @@ function updateRiskDisplay(result) {
     
     const riskLevel = result.risk_level || 0;
     const riskNames = ['매우낮음', '낮음', '보통', '높음', '매우높음'];
-    const riskColors = ['🟢', '🟡', '🟠', '🔴', '🟣'];
+    const riskColors = ['', '', '', '', ''];
+    // ['🟢', '🟡', '🟠', '🔴', '🟣'];
     
     // 애니메이션 효과
     riskDisplay.style.transform = 'scale(0.8)';
@@ -1358,13 +1359,13 @@ function showVersion() {
 
 // 콘솔에 로고 표시 (개발자 도구용)
 console.log(`
-🌊 CREW_SOOM - AI 침수 예측 시스템
+CREW_SOOM - AI 침수 예측 시스템
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✨ 수정된 버전 2.1.0
-🤖 4가지 AI 모델 통합
-📊 95.2% 예측 정확도
-🔧 강화된 오류 처리
-🌐 실시간 API 연동
+수정된 버전 2.1.0
+4가지 AI 모델 통합
+95.2% 예측 정확도
+강화된 오류 처리
+실시간 API 연동
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 개발팀: CREW_SOOM Team
 문의: info@crew-soom.kr
@@ -1392,4 +1393,129 @@ const detectDevTools = () => {
 // 개발 모드에서만 실행
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     setInterval(detectDevTools, 500);
+}
+
+/* ==========================================
+   실시간 날씨 데이터 업데이트 함수
+   ========================================== */
+
+async function updateWeatherBanner() {
+    try {
+        const result = await apiRequest('/api/weather_today');
+        
+        if (result.success) {
+            const data = result.data;
+            
+            // 오늘 날씨 업데이트
+            updateWeatherWidget(0, data.today);
+            
+            // 내일 날씨 업데이트  
+            updateWeatherWidget(1, data.tomorrow);
+            
+            console.log('날씨 베너 업데이트 완료 (실제 데이터)');
+        } else {
+            // API 실패 시 기본값 사용
+            console.warn('날씨 API 실패, 기본값 사용:', result.error);
+            updateWeatherWidget(0, getDefaultWeatherData());
+            updateWeatherWidget(1, getDefaultWeatherData(true));
+        }
+    } catch (error) {
+        console.error('날씨 베너 업데이트 오류:', error);
+        // 오류 시 기본값 사용
+        updateWeatherWidget(0, getDefaultWeatherData());
+        updateWeatherWidget(1, getDefaultWeatherData(true));
+    }
+}
+
+
+
+function updateWeatherWidget(index, weatherData) {
+    const widgets = document.querySelectorAll('.weather-widget');
+    if (!widgets[index]) return;
+    
+    const widget = widgets[index];
+    
+    // 온도 업데이트
+    const tempElement = widget.querySelector('.temperature');
+    if (tempElement) {
+        tempElement.textContent = `${weatherData.temperature}°C`;
+    }
+    
+    // 강수량 업데이트
+    const rainfallElement = widget.querySelector('.info-text .value');
+    if (rainfallElement) {
+        rainfallElement.textContent = `${weatherData.rainfall}mm`;
+    }
+    
+    // 미세먼지 업데이트
+    const fineDustElements = widget.querySelectorAll('.info-text .value');
+    if (fineDustElements[1]) {
+        fineDustElements[1].textContent = weatherData.fineDust;
+    }
+    if (fineDustElements[2]) {
+        fineDustElements[2].textContent = weatherData.ultraFineDust;
+    }
+    
+    // 날씨 아이콘 업데이트
+    const iconElement = widget.querySelector('.weather-icon');
+    if (iconElement) {
+        iconElement.className = `weather-icon ${weatherData.condition}`;
+        iconElement.innerHTML = getWeatherIconSVG(weatherData.condition);
+    }
+}
+
+function getDefaultWeatherData(isTomorrow = false) {
+    return {
+        temperature: isTomorrow ? 22 : 20,
+        rainfall: 0,
+        condition: 'sunny',
+        fineDust: '보통',
+        ultraFineDust: '보통'
+    };
+}
+
+function getWeatherIconSVG(condition) {
+    const icons = {
+        sunny: `<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="m12 2 0 2"/>
+            <path d="m12 20 0 2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+        </svg>`,
+        cloudy: `<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+        </svg>`,
+        rainy: `<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+            <path d="m16 14-3 5-3-5"/>
+            <path d="m8 19-2 3"/>
+            <path d="m18 16-2 3"/>
+        </svg>`
+    };
+    return icons[condition] || icons.sunny;
+}
+
+
+loadTodayWeather();
+
+async function loadTodayWeather() {
+    try {
+        const response = await fetch('/api/today_weather');
+        const data = await response.json();
+        
+        if (data.success) {
+            // 오늘 날씨 업데이트
+            document.querySelector('.weather-widget:first-child .temperature').textContent = data.temperature;
+            document.querySelector('.weather-widget:first-child .info-text:nth-child(4) .value').textContent = data.precipitation.replace('mm', '') + 'mm';
+            document.querySelector('.weather-widget:first-child .info-text:nth-child(5) .value').textContent = data.dust;
+            document.querySelector('.weather-widget:first-child .info-text:nth-child(6) .value').textContent = data.fine_dust;
+        }
+    } catch (error) {
+        console.error('날씨 로딩 오류:', error);
+    }
 }
