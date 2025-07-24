@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CREW_SOOM - 로그인 | 대한민국 NO.1 AI 침수 예측 플랫폼</title>
+    <title>SOOM - 대한민국 NO.1 AI 침수 예측 플랫폼</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
-
         /* Elancer 스타일 로그인 페이지 */
         :root {
             --primary-color: #2c5ff7;
@@ -45,6 +44,7 @@
         }
 
         body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: var(--dark-gray);
             background: var(--gradient-primary);
@@ -70,10 +70,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            /*background: 
+            background: 
                 radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);*/
-            background-color: var(--gradient-primary);
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
             pointer-events: none;
         }
 
@@ -151,7 +150,7 @@
         }
 
         .login-subtitle {
-            /*color: var(--medium-gray);*/
+            color: var(--medium-gray);
             font-size: 1rem;
             margin-bottom: 32px;
             font-weight: 500;
@@ -217,12 +216,13 @@
 
         .login-input {
             width: 100%;
-            padding: 16px 20px 16px 48px;
+            padding: 16px 20px;
             border: 2px solid #e1e8f0;
             border-radius: var(--border-radius-lg);
             font-size: 16px;
             transition: all 0.3s ease;
             background: var(--white);
+            font-family: inherit;
         }
 
         .login-input:focus {
@@ -344,6 +344,7 @@
         }
 
         .demo-credentials {
+            font-family: 'Courier New', monospace;
             font-weight: 600;
             color: var(--dark-gray);
             font-size: 16px;
@@ -356,7 +357,7 @@
         }
 
         .login-footer a:hover {
-            font-weight: 900;
+            text-decoration: underline;
         }
 
         /* 특징 리스트 */
@@ -521,7 +522,6 @@
         <div class="login-container">
             <!-- 로그인 헤더 -->
             <div class="login-header">
-                <div class="login-logo"></div>
                 <h1 class="login-title">SOOM</h1>
                 <p class="login-subtitle">대한민국 NO.1 AI 침수 예측 플랫폼</p>
                 
@@ -562,7 +562,7 @@
                             required
                             autocomplete="username"
                         >
-                        <span class="login-input-icon"><i class="fas fa-user"></i></span>
+                        <span class="login-input-icon"></span>
                     </div>
                 </div>
 
@@ -580,13 +580,13 @@
                             required
                             autocomplete="current-password"
                         >
-                        <span class="login-input-icon"><i class="fas fa-lock"></i></span>
+                        <span class="login-input-icon"></span>
                     </div>
                 </div>
 
                 <button type="submit" class="login-button" id="login-button">
                     <span class="login-text">
-                        <i class="fas fa-sign-in-alt"></i>
+                        <!--<i class="fas fa-sign-in-alt"></i>-->
                         AI 예측 시스템 로그인
                     </span>
                     <div class="login-loading">
@@ -601,7 +601,7 @@
                 <div class="demo-account">
                     <h4>데모 계정으로 체험하기</h4>
                     <div class="demo-credentials">
-                        ID: admin / PW: 1234
+                        ID: <strong>admin</strong> / PW: <strong>1234</strong>
                     </div>
                 </div>
                 
@@ -612,32 +612,32 @@
                 </p>
             </div>
 
-            <!-- 시스템 특징
+            <!-- 시스템 특징 
             <div class="login-features">
-                <h4>CREW_SOOM 핵심 기능</h4>
+                <h4>🚀 CREW_SOOM 핵심 기능</h4>
                 <div class="feature-list">
                     <div class="feature-item">
-                        <span class="feature-icon"></span>
+                        <span class="feature-icon">🤖</span>
                         <span class="feature-text">4가지 고급 AI 모델 (RandomForest, XGBoost, LSTM+CNN, Transformer)</span>
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon"></span>
+                        <span class="feature-icon">🌐</span>
                         <span class="feature-text">4개 기상청 API 실시간 연동 시스템</span>
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon"></span>
+                        <span class="feature-icon">📊</span>
                         <span class="feature-text">고급 데이터 시각화 및 통계 분석</span>
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon"></span>
+                        <span class="feature-icon">⚡</span>
                         <span class="feature-text">실시간 위험도 예측 및 즉시 알림</span>
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon"></span>
+                        <span class="feature-icon">🎯</span>
                         <span class="feature-text">95.2% 검증된 높은 예측 정확도</span>
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon"></span>
+                        <span class="feature-icon">🏆</span>
                         <span class="feature-text">25,420건 누적 예측 성공 사례</span>
                     </div>
                 </div>
@@ -681,7 +681,7 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    showSuccessMessage('로그인 성공! AI 예측 시스템으로 이동합니다...');
+                    showSuccessMessage('🎉 로그인 성공! AI 예측 시스템으로 이동합니다...');
                     
                     // 성공 애니메이션
                     loginButton.style.background = 'var(--gradient-success)';
@@ -691,10 +691,10 @@
                         window.location.href = '/';
                     }, 1500);
                 } else {
-                    showErrorMessage('' + (result.message || '로그인에 실패했습니다.'));
+                    showErrorMessage('❌ ' + (result.message || '로그인에 실패했습니다.'));
                 }
             } catch (error) {
-                showErrorMessage('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+                showErrorMessage('🌐 네트워크 오류가 발생했습니다. 다시 시도해주세요.');
                 console.error('로그인 오류:', error);
             } finally {
                 // 로딩 상태 종료 (성공이 아닌 경우만)
@@ -733,7 +733,7 @@
             // 입력 필드 포커스 효과
             setupInputEffects();
             
-            console.log('SOOM Elancer 스타일 로그인 페이지 로드 완료');
+            console.log('🌊 CREW_SOOM Elancer 스타일 로그인 페이지 로드 완료');
         });
         
         // 메시지 표시 함수
@@ -805,7 +805,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.logged_in) {
-                    showSuccessMessage('이미 로그인되어 있습니다. 메인 페이지로 이동합니다...');
+                    showSuccessMessage('🎉 이미 로그인되어 있습니다. 메인 페이지로 이동합니다...');
                     setTimeout(() => {
                         window.location.href = '/';
                     }, 1500);

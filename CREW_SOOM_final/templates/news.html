@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOOM - 대한민국 NO.1 AI 침수 예측 플랫폼</title>
+    <link rel="soom icon" href="static/images/logo/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+        /* Elancer 스타일 기반 CSS */
+        :root {
+            --primary-color: #2c5ff7;
+            --primary-dark: #1a4ae6;
+            --secondary-color: #4a90e2;
+            --accent-color: #00d4aa;
+            --success-color: #00c851;
+            --warning-color: #ffbb33;
+            --danger-color: #ff4444;
+            --white: #ffffff;
+            --light-gray: #f8f9fc;
+            --medium-gray: #8492a6;
+            --dark-gray: #273444;
+            --black: #1a202c;
+            
+            --gradient-primary: linear-gradient(135deg, #2c5ff7 0%, #4a90e2 100%);
+            --gradient-success: linear-gradient(135deg, #00c851 0%, #00d4aa 100%);
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            
+            --shadow-sm: 0 2px 4px rgba(44, 95, 247, 0.08);
+            --shadow-md: 0 4px 12px rgba(44, 95, 247, 0.15);
+            --shadow-lg: 0 8px 25px rgba(44, 95, 247, 0.2);
+            
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'NanumSquare';
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background: var(--light-gray);
+            overflow-x: hidden;
+        }
+
+        /* * * * * * * * * * Header nav 시작 * * * * * * * * * */
+        .header {
+            background: var(--white);
+            /*box-shadow: var(--shadow-sm);*/
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(44, 95, 247, 0.08);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand .logo a{
+            text-decoration: none;
+        }
+
+        .nav-brand h1 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            font-family: 'NanumSquareExtraBold';
+            margin: 0;
+        }
+
+        .nav-brand .subtitle {
+            font-size: 0.875rem;
+            color: var(--medium-gray);
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 12px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: bold;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            /*color: var(--primary-color);
+            background: rgba(44, 95, 247, 0.08);*/
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            /*transform: translateY(-2px);*/
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: var(--white);
+        }
+
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: var(--border-radius-lg);
+        }
+
+        /* 드롭다운 스타일 */
+        .nav-item.dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 130%;
+            left: -30px;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 8px 0;
+            margin-top: 4px;
+            z-index: 1000;
+            list-style-type: none;
+        }
+
+        .dropdown-menu li{
+            text-align: center;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu::marker{
+            content: none;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+        }
+
+        .dropdown-toggle::after {
+            content: "▼";
+            font-size: 12px;
+            margin-left: 8px;
+            transition: transform 0.2s;
+            display: none;
+            cursor: pointer;
+        }
+
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(180deg);
+        }
+
+        /* Additional Elancer-style components */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: var(--border-radius);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-connected {
+            background: rgba(0, 200, 81, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-disconnected {
+            background: rgba(255, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .scenario-btn {
+            padding: 12px 16px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .model-comparison-card {
+            grid-column: 1 / -1;
+        }
+        /* * * * * * * * * * Header nav 끝* * * * * * * * * */
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .page-title {
+            font-size: 42px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .section-header hr{
+            opacity: 0.3;
+        }
+
+        .section-title {
+            font-size: 49px;
+            font-weight: bold;
+            letter-spacing: -0.05em;
+        }
+
+        .section-title .highlight {
+            color: var(--primary-color);
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        /* 필터 및 검색 */
+        .news-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .news-filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: var(--gradient-primary);
+        }
+
+        .news-search {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            width: 250px;
+        }
+
+        /* 로딩 상태 */
+        .loading-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 에러 상태 */
+        .error-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            color: var(--warning-color);
+            margin-bottom: 20px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            position: relative;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* 카테고리별 배경색 */
+        .news-image.category-폭염특보 { background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 100%); }
+        .news-image.category-태풍정보 { background: linear-gradient(135deg, #2c5ff7 0%, #4a90e2 100%); }
+        .news-image.category-집중호우 { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .news-image.category-한파주의보 { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+        .news-image.category-미세먼지 { background: linear-gradient(135deg, #8b5a3c 0%, #a16207 100%); }
+        .news-image.category-AI예측 { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+        .news-image.category-건강정보 { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); }
+        .news-image.category-기후변화 { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); }
+        .news-image.category-기상분석 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+        .news-category-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #1f2937;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .news-content {
+            padding: 20px;
+        }
+
+        .news-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1f2937;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-excerpt {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .news-source {
+            color: var(--gradient-primary);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .news-date {
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .news-stats {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .stat-item {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+            padding: 20px 0;
+        }
+
+        .pagination-btn {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .pagination-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .pagination-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: var(--gradient-primary);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-dots {
+            color: #9ca3af;
+            padding: 0 5px;
+        }
+
+        /* * * * * * * * * * footer 시작 * * * * * * * * * */
+        .footer-section {
+            background-color: var(--black);
+            padding: 80px 0 40px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 상단 정보 섹션 */
+        .footer-info {
+            margin-bottom: 60px;
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #93959C;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #666;
+        }
+
+        .footer-details p{
+            color:#93959C
+        }
+
+        .copyright {
+            color: #999;
+            font-size: 13px;
+        }
+        /* * * * * * * * * * footer 끝 * * * * * * * * * */
+
+        /* 반응형 */
+        @media (max-width: 1024px) {
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .news-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 20px 24px;
+            }
+
+            .nav-menu {
+                margin-top: 16px;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 16px;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 32px;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header 시작 -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo">
+                    <a href="/" class="nav-link active"><h1>SOOM</h1></a>
+                </div>
+                <!--<div class="subtitle">대한민국 NO.1 AI 침수 예측 플랫폼</div>-->
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="#about" class="nav-link">기술 소개</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" onclick="toggleDropdown(event)" aria-expanded="false">
+                        모델 분석
+                    </a>
+                    <ul class="dropdown-menu" id="modelHistoryDropdown">
+                        <li><a href="/visualization_sub" class="dropdown-item">시간별</a></li>
+                        <li><a href="/visualization_sub2" class="dropdown-item">일별</a></li>
+                    </ul>
+                </li>
+                <li><a href="/map" class="nav-link">실시간 지도</a></li>
+                <li><a href="/news" class="nav-link">NEWS</a></li>
+                <li><a href="/user_model" class="nav-link">침수 예측</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <a href="/login" class="btn btn-outline">로그인</a>
+                <button class="btn btn-primary" onclick="showRegister()">회원가입</button>
+            </div>
+        </nav>
+    </header>
+    <!-- Header 끝 -->
+
+    <main class="main-container">
+        <div class="section-header">
+            <h2 class="section-title">SOOM <span class="highlight">NEWS</span></h2>
+            <p class="section-subtitle">실시간으로 업데이트되는 최신 날씨 뉴스를 확인해보세요.</p>
+        </div>
+
+        <!-- 뉴스 컨트롤 -->
+        <div class="news-controls">
+            <div class="news-filters">
+                <button class="filter-btn active" data-category="all">전체</button>
+                <button class="filter-btn" data-category="폭염특보">날씨뉴스</button>
+                <button class="filter-btn" data-category="태풍정보">태풍정보</button>
+                <button class="filter-btn" data-category="집중호우">집중호우</button>
+                <button class="filter-btn" data-category="한파주의보">한파주의보</button>
+                <button class="filter-btn" data-category="미세먼지">미세먼지</button>
+                <button class="filter-btn" data-category="AI예측">AI예측</button>
+            </div>
+            
+            <div class="news-search">
+                <input type="text" class="search-input" placeholder="뉴스 검색..." id="search-input">
+                <button class="btn btn-primary" onclick="searchNews()">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="btn btn-outline" onclick="refreshNews()">
+                    <i class="fas fa-refresh"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 뉴스 로딩 상태 -->
+        <div id="news-loading" class="loading-container">
+            <div class="spinner"></div>
+            <h3>최신 날씨 뉴스를 불러오는 중...</h3>
+            <p>잠시만 기다려 주세요.</p>
+        </div>
+
+        <!-- 뉴스 그리드 -->
+        <div class="news-grid" id="news-grid" style="display: none;">
+            <!-- 동적으로 생성될 뉴스 카드들 -->
+        </div>
+
+        <!-- 에러 상태 -->
+        <div id="news-error" class="error-container" style="display: none;">
+            <i class="fas fa-exclamation-triangle error-icon"></i>
+            <h3>뉴스를 불러올 수 없습니다</h3>
+            <p>네트워크 연결을 확인하고 다시 시도해주세요.</p>
+            <button class="btn btn-primary" onclick="loadAllNews()">
+                <i class="fas fa-refresh"></i> 다시 시도
+            </button>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination" id="pagination" style="display: none;">
+            <button class="pagination-btn" onclick="goToPage('prev')" id="prev-btn">‹ 이전</button>
+            <div id="page-numbers"></div>
+            <button class="pagination-btn" onclick="goToPage('next')" id="next-btn">다음 ›</button>
+        </div>
+    </main>
+
+    <!-- footer 시작 -->
+    <footer class="footer-section">
+        <div class="footer-container">
+            <!-- 상단 정보 -->
+            <div class="footer-info">
+                <!-- 링크 및 회사 정보 -->
+                <div class="footer-left">
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">이용약관</a>
+                        <a href="#" class="footer-link">개인정보 처리방침</a>
+                    </div>
+                    
+                    <div class="footer-details">
+                        <p>(08754) 서울 관악구 신림로 340 르네상스복합쇼핑몰 6층</p>
+                        <p>대표이사 : SOOM &nbsp;&nbsp;&nbsp; 사업자등록번호 : 123-45-67890 &nbsp;&nbsp;&nbsp; 통신판매신고번호 : 제 123-45-67-89112호</p>
+                        <br>
+                        <p>Copyright © SOOM I All Rights Reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer 끝 -->
+
+
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/model_comparison.js"></script>
+    <script>
+
+        // 드롭다운 토글 함수
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdown = document.getElementById('modelHistoryDropdown');
+            const toggle = event.target;
+            
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                toggle.setAttribute('aria-expanded', 'false');
+            } else {
+                dropdown.classList.add('show');
+                toggle.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        let allNews = [];
+        let filteredNews = [];
+        let currentPage = 1;
+        let newsPerPage = 9;
+        let currentCategory = 'all';
+
+        // 페이지 로드 시 뉴스 로딩
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllNews();
+            setupEventListeners();
+        });
+
+        // 이벤트 리스너 설정
+        function setupEventListeners() {
+            // 카테고리 필터 버튼
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.dataset.category;
+                    filterNews();
+                });
+            });
+
+            // 검색 입력
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchNews();
+                }
+            });
+        }
+
+        // 모든 뉴스 로딩
+        async function loadAllNews() {
+            try {
+                showLoading();
+                
+                const response = await fetch('/api/weather_news?display=50');
+                const data = await response.json();
+                
+                if (data.success && data.news && data.news.length > 0) {
+                    // API 뉴스와 기본 뉴스 합치기
+                    allNews = [...data.news, ...getExtendedDefaultNews()];
+                    filteredNews = [...allNews];
+                    displayNews();
+                    showPagination();
+                    hideLoading();
+                    
+                    console.log(`총 ${allNews.length}개 뉴스 로딩 완료`);
+                } else {
+                    // API 실패 시 기본 뉴스만 사용
+                    allNews = getExtendedDefaultNews();
+                    filteredNews = [...allNews];
+                    displayNews();
+                    showPagination();
+                    hideLoading();
+                }
+                
+            } catch (error) {
+                console.error('뉴스 로딩 오류:', error);
+                allNews = getExtendedDefaultNews();
+                filteredNews = [...allNews];
+                displayNews();
+                showPagination();
+                hideLoading();
+            }
+        }
+
+        // 확장된 기본 뉴스 데이터
+        function getExtendedDefaultNews() {
+            return [
+                {
+                    title: '전국 폭염특보 발령! 기상청 긴급 발표로 체감온도 40도 돌파',
+                    description: '기상청이 전국 대부분 지역에 폭염 특보를 발령했습니다. 최고 기온이 38도를 기록할 것으로 예상됩니다.',
+                    category: '폭염특보',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.03.12',
+                    link: '#'
+                },
+                {
+                    title: '제7호 태풍 \'칸눈\' 북상 중, 주말 한반도 영향권 진입 예상',
+                    description: '제7호 태풍 \'칸눈\'이 북상하면서 주말 우리나라에 영향을 미칠 것으로 예상됩니다. 많은 비와 강풍이 예상됩니다.',
+                    category: '태풍정보',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.02.05',
+                    link: '#'
+                },
+                {
+                    title: '중부지방 집중호우 경보! 시간당 50mm 이상 강수량 예상',
+                    description: '중부지방에 장마가 시작되면서 시간당 30mm 이상의 집중호우가 예상됩니다. 침수 피해에 주의하시기 바랍니다.',
+                    category: '집중호우',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.03.10',
+                    link: '#'
+                },
+                {
+                    title: '올 여름 이상기후 전망, 기상청 "평년보다 2도 높을 것"',
+                    description: '기상청이 올 여름 이상기후 전망을 발표했습니다. 평년보다 2도 이상 높은 기온이 예상됩니다.',
+                    category: '기상분석',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.03.08',
+                    link: '#'
+                },
+                {
+                    title: '미세먼지 농도 \'매우나쁨\', 외출 시 KF94 마스크 필수',
+                    description: '전국 미세먼지 농도가 매우나쁨 수준을 기록하고 있습니다. 외출 시 마스크 착용이 필수입니다.',
+                    category: '미세먼지',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.03.07',
+                    link: '#'
+                },
+                {
+                    title: '전국 한파주의보 발령, 체감온도 영하 15도까지 하락',
+                    description: '전국에 한파주의보가 발령되었습니다. 체감온도가 영하 15도까지 떨어질 것으로 예상됩니다.',
+                    category: '한파주의보',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.03.05',
+                    link: '#'
+                },
+                {
+                    title: '폭염 대비 건강관리법, 온열질환 예방 수칙 5가지',
+                    description: '폭염에 대비한 건강관리법과 온열질환 예방 수칙을 소개합니다.',
+                    category: '건강정보',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.03.03',
+                    link: '#'
+                },
+                {
+                    title: '지구온난화 가속화, 2025년 역대 최고 기온 경신 전망',
+                    description: '지구온난화가 가속화되면서 2025년 역대 최고 기온을 경신할 것으로 전망됩니다.',
+                    category: '기후변화',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.03.01',
+                    link: '#'
+                },
+                {
+                    title: '새로운 AI 침수 예측 시스템 도입, 정확도 95% 달성',
+                    description: '새로운 AI 기반 침수 예측 시스템이 95%의 높은 정확도를 달성하여 더욱 정밀한 예측이 가능해졌습니다.',
+                    category: 'AI예측',
+                    source: '날씨 NEWS',
+                    pubDate: '2025.02.28',
+                    link: '#'
+                }
+            ];
+        }
+
+        // 뉴스 필터링
+        function filterNews() {
+            if (currentCategory === 'all') {
+                filteredNews = [...allNews];
+            } else {
+                filteredNews = allNews.filter(news => news.category === currentCategory);
+            }
+            
+            currentPage = 1;
+            displayNews();
+            updatePagination();
+        }
+
+        // 뉴스 검색
+        function searchNews() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                filteredNews = [...allNews];
+            } else {
+                filteredNews = allNews.filter(news => 
+                    news.title.toLowerCase().includes(searchTerm) ||
+                    news.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            currentPage = 1;
+            displayNews();
+            updatePagination();
+        }
+
+        // 뉴스 새로고침
+        function refreshNews() {
+            loadAllNews();
+        }
+
+        // 뉴스 표시
+        function displayNews() {
+            const newsGrid = document.getElementById('news-grid');
+            const startIndex = (currentPage - 1) * newsPerPage;
+            const endIndex = startIndex + newsPerPage;
+            const newsToShow = filteredNews.slice(startIndex, endIndex);
+            
+            if (newsToShow.length === 0) {
+                newsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+                        <h3>검색 결과가 없습니다</h3>
+                        <p>다른 키워드로 검색해보세요.</p>
+                    </div>
+                `;
+            } else {
+                newsGrid.innerHTML = newsToShow.map((news, index) => `
+                    <article class="news-card" onclick="openNews('${news.link}', '${news.title}')">
+                        <div class="news-image category-${news.category}">
+                            <div class="news-category-badge">${news.category}</div>
+                            <i class="fas fa-newspaper" style="font-size: 2rem; opacity: 0.7;"></i>
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">${news.title}</h3>
+                            <p class="news-excerpt">${news.description}</p>
+                            <div class="news-meta">
+                                <span class="news-source">${news.source}</span>
+                                <span class="news-date">${news.pubDate}</span>
+                            </div>
+                            <div class="news-stats">
+                                <span class="stat-item">조회수 ${Math.floor(Math.random() * 5000 + 1000).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+            }
+            
+            newsGrid.style.display = 'grid';
+        }
+
+        // 페이지네이션 표시
+        function showPagination() {
+            document.getElementById('pagination').style.display = 'flex';
+            updatePagination();
+        }
+
+        // 페이지네이션 업데이트
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredNews.length / newsPerPage);
+            const pageNumbers = document.getElementById('page-numbers');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            // 이전/다음 버튼 상태
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            
+            // 페이지 번호 생성
+            let pageNumbersHTML = '';
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                pageNumbersHTML += `
+                    <button class="pagination-btn ${i === currentPage ? 'active' : ''}" 
+                            onclick="goToPage(${i})">${i}</button>
+                `;
+            }
+            
+            if (endPage < totalPages) {
+                pageNumbersHTML += '<span class="pagination-dots">...</span>';
+                pageNumbersHTML += `<button class="pagination-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            pageNumbers.innerHTML = pageNumbersHTML;
+        }
+
+        // 페이지 이동
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredNews.length / newsPerPage);
+            
+            if (page === 'prev') {
+                if (currentPage > 1) currentPage--;
+            } else if (page === 'next') {
+                if (currentPage < totalPages) currentPage++;
+            } else {
+                currentPage = page;
+            }
+            
+            displayNews();
+            updatePagination();
+            
+            // 페이지 상단으로 스크롤
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 뉴스 열기
+        function openNews(link, title) {
+            if (link && link !== '#' && link !== 'undefined') {
+                window.open(link, '_blank', 'noopener,noreferrer');
+            } else {
+                console.log(`뉴스 상세 보기: ${title}`);
+                alert('뉴스 원문 링크를 준비 중입니다.');
+            }
+        }
+
+        // UI 상태 관리
+        function showLoading() {
+            document.getElementById('news-loading').style.display = 'block';
+            document.getElementById('news-grid').style.display = 'none';
+            document.getElementById('news-error').style.display = 'none';
+            document.getElementById('pagination').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('news-loading').style.display = 'none';
+        }
+
+        function showError() {
+            document.getElementById('news-loading').style.display = 'none';
+            document.getElementById('news-grid').style.display = 'none';
+            document.getElementById('news-error').style.display = 'block';
+            document.getElementById('pagination').style.display = 'none';
+        }
+
+        // 기타 함수들
+        function showRegister() {
+            alert('회원가입 기능은 준비 중입니다. 데모 계정으로 로그인해보세요!\n\nID: admin\nPW: 1234');
+        }
+
+        // 스크롤 시 헤더 그림자 효과
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 10) {
+                header.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            } else {
+                header.style.boxShadow = '0 2px 4px rgba(44, 95, 247, 0.08)';
+            }
+        });
+    </script>
+</body>
+</html>
