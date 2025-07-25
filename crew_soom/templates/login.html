@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOOM - 대한민국 NO.1 AI 침수 예측 플랫폼</title>
+    <link rel="soom icon" href="static/images/logo/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Elancer 스타일 로그인 페이지 */
+        :root {
+            --primary-color: #2c5ff7;
+            --primary-dark: #1a4ae6;
+            --secondary-color: #4a90e2;
+            --accent-color: #00d4aa;
+            --success-color: #00c851;
+            --warning-color: #ffbb33;
+            --danger-color: #ff4444;
+            --white: #ffffff;
+            --light-gray: #f8f9fc;
+            --medium-gray: #8492a6;
+            --dark-gray: #273444;
+            --black: #1a202c;
+            
+            --gradient-primary: linear-gradient(135deg, #2c5ff7 0%, #4a90e2 100%);
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #00c851 0%, #00d4aa 100%);
+            
+            --shadow-sm: 0 2px 4px rgba(44, 95, 247, 0.08);
+            --shadow-md: 0 4px 12px rgba(44, 95, 247, 0.15);
+            --shadow-lg: 0 8px 25px rgba(44, 95, 247, 0.2);
+            --shadow-xl: 0 12px 40px rgba(44, 95, 247, 0.25);
+            
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 로그인 페이지 레이아웃 */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        /* 배경 패턴 */
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* 홈으로 돌아가기 버튼 */
+        .back-to-home {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* 로그인 컨테이너 */
+        .login-container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-xl);
+            padding: 48px 40px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            max-width: 480px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        /* 로그인 헤더 */
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-logo {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .login-title {
+            font-size: 2.25rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .login-subtitle {
+            color: var(--medium-gray);
+            font-size: 1rem;
+            margin-bottom: 32px;
+            font-weight: 500;
+        }
+
+        /* 시스템 통계 - Elancer 스타일 */
+        .login-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .login-stat {
+            text-align: center;
+            padding: 20px 16px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(44, 95, 247, 0.08);
+        }
+
+        .login-stat:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .login-stat-number {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+        .login-stat-label {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+            font-weight: 500;
+        }
+
+        /* 로그인 폼 */
+        .login-form {
+            margin-bottom: 32px;
+        }
+
+        .login-input-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .login-input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e1e8f0;
+            border-radius: var(--border-radius-lg);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: var(--white);
+            font-family: inherit;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(44, 95, 247, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .login-input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--medium-gray);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus + .login-input-icon {
+            color: var(--primary-color);
+        }
+
+        /* 로그인 버튼 */
+        .login-button {
+            width: 100%;
+            padding: 18px 24px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius-lg);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-button:active {
+            transform: translateY(-1px);
+        }
+
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .login-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 데모 계정 정보 */
+        .login-footer {
+            text-align: center;
+            color: var(--medium-gray);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .demo-account {
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 16px;
+            border: 1px solid rgba(44, 95, 247, 0.08);
+        }
+
+        .demo-account h4 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .demo-credentials {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 16px;
+        }
+
+        .login-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 특징 리스트 */
+        .login-features {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(44, 95, 247, 0.1);
+        }
+
+        .login-features h4 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--primary-color);
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            padding: 12px 16px;
+            background: rgba(44, 95, 247, 0.04);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(44, 95, 247, 0.08);
+            transform: translateX(4px);
+        }
+
+        .feature-icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .feature-text {
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        /* 알림 메시지 */
+        .message {
+            padding: 16px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            background: rgba(255, 68, 68, 0.1);
+            color: #c53030;
+            border: 1px solid rgba(255, 68, 68, 0.2);
+        }
+
+        .success-message {
+            background: rgba(0, 200, 81, 0.1);
+            color: #22543d;
+            border: 1px solid rgba(0, 200, 81, 0.2);
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 16px;
+                padding: 32px 24px;
+            }
+
+            .login-title {
+                font-size: 1.875rem;
+            }
+
+            .login-stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .back-to-home {
+                top: 20px;
+                left: 20px;
+            }
+
+            .back-btn {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 12px;
+                padding: 24px 20px;
+            }
+
+            .login-title {
+                font-size: 1.625rem;
+            }
+
+            .login-logo {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* 추가 애니메이션 */
+        .login-container {
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 입력 필드 포커스 효과 강화 */
+        .input-wrapper {
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus ~ .input-wrapper {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <!-- 홈으로 돌아가기 -->
+        <div class="back-to-home">
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i> 홈으로 돌아가기
+            </a>
+        </div>
+
+        <div class="login-container">
+            <!-- 로그인 헤더 -->
+            <div class="login-header">
+                <h1 class="login-title">SOOM</h1>
+                <p class="login-subtitle">대한민국 NO.1 AI 침수 예측 플랫폼</p>
+                
+                <!-- 시스템 통계 - Elancer 스타일 -->
+                <div class="login-stats">
+                    <div class="login-stat">
+                        <div class="login-stat-number">4</div>
+                        <div class="login-stat-label">AI 모델</div>
+                    </div>
+                    <div class="login-stat">
+                        <div class="login-stat-number" id="accuracy-stat">95.2%</div>
+                        <div class="login-stat-label">예측 정확도</div>
+                    </div>
+                    <div class="login-stat">
+                        <div class="login-stat-number">실시간</div>
+                        <div class="login-stat-label">분석 속도</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 알림 메시지 -->
+            <div id="error-message" class="message error-message"></div>
+            <div id="success-message" class="message success-message"></div>
+
+            <!-- 로그인 폼 -->
+            <form class="login-form" id="login-form">
+                <div class="login-input-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> 사용자 ID
+                    </label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            class="login-input" 
+                            placeholder="사용자 ID를 입력하세요"
+                            required
+                            autocomplete="username"
+                        >
+                        <span class="login-input-icon"></span>
+                    </div>
+                </div>
+
+                <div class="login-input-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> 비밀번호
+                    </label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="login-input" 
+                            placeholder="비밀번호를 입력하세요"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <span class="login-input-icon"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-button" id="login-button">
+                    <span class="login-text">
+                        <!--<i class="fas fa-sign-in-alt"></i>-->
+                        AI 예측 시스템 로그인
+                    </span>
+                    <div class="login-loading">
+                        <div class="login-spinner"></div>
+                        <span>로그인 중...</span>
+                    </div>
+                </button>
+            </form>
+
+            <!-- 데모 계정 정보 -->
+            <div class="login-footer">
+                <div class="demo-account">
+                    <h4>데모 계정으로 체험하기</h4>
+                    <div class="demo-credentials">
+                        ID: <strong>admin</strong> / PW: <strong>1234</strong>
+                    </div>
+                </div>
+                
+                <p>
+                    문의사항이 있으신가요?
+                    <a href="mailto:info@crew-soom.kr">고객지원</a> |
+                    <a href="#help">도움말</a>
+                </p>
+            </div>
+
+            <!-- 시스템 특징 
+            <div class="login-features">
+                <h4> CREW_SOOM 핵심 기능</h4>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon"></span>
+                        <span class="feature-text">4가지 고급 AI 모델 (RandomForest, XGBoost, LSTM+CNN, Transformer)</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"></span>
+                        <span class="feature-text">4개 기상청 API 실시간 연동 시스템</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"></span>
+                        <span class="feature-text">고급 데이터 시각화 및 통계 분석</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"></span>
+                        <span class="feature-text">실시간 위험도 예측 및 즉시 알림</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"></span>
+                        <span class="feature-text">95.2% 검증된 높은 예측 정확도</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"></span>
+                        <span class="feature-text">25,420건 누적 예측 성공 사례</span>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+
+    <script>
+        // Elancer 스타일 로그인 JavaScript
+        
+        // 로그인 폼 처리
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginButton = document.getElementById('login-button');
+            const loginText = loginButton.querySelector('.login-text');
+            const loginLoading = loginButton.querySelector('.login-loading');
+            
+            // 로딩 상태 시작
+            loginButton.disabled = true;
+            loginText.style.display = 'none';
+            loginLoading.style.display = 'flex';
+            
+            // 에러/성공 메시지 숨기기
+            hideMessages();
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccessMessage(' 로그인 성공! AI 예측 시스템으로 이동합니다...');
+                    
+                    // 성공 애니메이션
+                    loginButton.style.background = 'var(--gradient-success)';
+                    
+                    // 1.5초 후 메인 페이지로 리다이렉트
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                } else {
+                    showErrorMessage(' ' + (result.message || '로그인에 실패했습니다.'));
+                }
+            } catch (error) {
+                showErrorMessage(' 네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+                console.error('로그인 오류:', error);
+            } finally {
+                // 로딩 상태 종료 (성공이 아닌 경우만)
+                if (!document.getElementById('success-message').style.display || 
+                    document.getElementById('success-message').style.display === 'none') {
+                    loginButton.disabled = false;
+                    loginText.style.display = 'flex';
+                    loginLoading.style.display = 'none';
+                    loginButton.style.background = 'var(--gradient-primary)';
+                }
+            }
+        });
+        
+        // 엔터 키 처리
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const form = document.getElementById('login-form');
+                if (form) {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+        
+        // 데모 계정 자동 입력 (개발 편의용)
+        document.addEventListener('DOMContentLoaded', function() {
+            // URL에 demo=1이 있으면 데모 계정 자동 입력
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('demo') === '1') {
+                document.getElementById('username').value = 'admin';
+                document.getElementById('password').value = '1234';
+            }
+            
+            // 정확도 통계 애니메이션
+            animateAccuracyStat();
+            
+            // 입력 필드 포커스 효과
+            setupInputEffects();
+            
+            console.log(' CREW_SOOM Elancer 스타일 로그인 페이지 로드 완료');
+        });
+        
+        // 메시지 표시 함수
+        function showErrorMessage(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            // 5초 후 자동 숨김
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showSuccessMessage(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+        }
+        
+        function hideMessages() {
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+        }
+        
+        // 정확도 통계 애니메이션
+        function animateAccuracyStat() {
+            const accuracyElement = document.getElementById('accuracy-stat');
+            let current = 0;
+            const target = 95.2;
+            const increment = target / 60; // 1초 동안 애니메이션
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                accuracyElement.textContent = current.toFixed(1) + '%';
+            }, 16); // 60fps
+        }
+        
+        // 입력 필드 포커스 효과
+        function setupInputEffects() {
+            document.querySelectorAll('.login-input').forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                    this.parentElement.style.transition = 'transform 0.3s ease';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'scale(1)';
+                });
+                
+                // 입력값이 있을 때 아이콘 색상 변경
+                input.addEventListener('input', function() {
+                    const icon = this.nextElementSibling;
+                    if (this.value.length > 0) {
+                        icon.style.color = 'var(--primary-color)';
+                    } else {
+                        icon.style.color = 'var(--medium-gray)';
+                    }
+                });
+            });
+        }
+        
+        // 세션 확인 (이미 로그인된 경우 리다이렉트)
+        fetch('/api/session')
+            .then(response => response.json())
+            .then(data => {
+                if (data.logged_in) {
+                    showSuccessMessage('이미 로그인되어 있습니다. 메인 페이지로 이동합니다...');
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                }
+            })
+            .catch(error => {
+                console.log('세션 확인 중 오류:', error);
+            });
+        
+        // 데모 계정 클릭으로 자동 입력
+        document.querySelector('.demo-credentials').addEventListener('click', function() {
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = '1234';
+            
+            // 시각적 피드백
+            this.style.background = 'var(--gradient-primary)';
+            this.style.color = 'white';
+            this.style.transform = 'scale(1.02)';
+            
+            setTimeout(() => {
+                this.style.background = '';
+                this.style.color = '';
+                this.style.transform = '';
+            }, 200);
+        });
+    </script>
+</body>
+</html>
