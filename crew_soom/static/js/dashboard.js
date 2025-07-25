@@ -1222,23 +1222,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
         
         // 6. 서비스 워커 등록 (PWA 지원)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-                .then(registration => {
-                    console.log('Service Worker 등록 성공:', registration);
-                })
-                .catch(error => {
-                    console.log('Service Worker 등록 실패:', error);
-                });
-        }
+//        if ('serviceWorker' in navigator) {
+//            navigator.serviceWorker.register('/sw.js')
+//                .then(registration => {
+//                    console.log('Service Worker 등록 성공:', registration);
+//                })
+//                .catch(error => {
+//                    console.log('Service Worker 등록 실패:', error);
+//                });
+//        }
         
-        console.log('CREW_SOOM 수정된 대시보드 초기화 완료!');
-        console.log('추가된 기능들:');
-        console.log('   - 강화된 오류 처리 및 재시도 로직');
-        console.log('   - 실시간 입력값 검증');
-        console.log('   - 네트워크 상태 모니터링');
-        console.log('   - 이미지 모달 뷰어');
-        console.log('   - 성능 최적화 (디바운싱/스로틀링)');
+//        console.log('CREW_SOOM 수정된 대시보드 초기화 완료!');
+//        console.log('추가된 기능들:');
+//        console.log('   - 강화된 오류 처리 및 재시도 로직');
+//        console.log('   - 실시간 입력값 검증');
+//        console.log('   - 네트워크 상태 모니터링');
+//        console.log('   - 이미지 모달 뷰어');
+//        console.log('   - 성능 최적화 (디바운싱/스로틀링)');
         
     } catch (error) {
         console.error('대시보드 초기화 실패:', error);
