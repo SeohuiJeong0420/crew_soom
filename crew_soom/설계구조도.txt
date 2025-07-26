@@ -1,0 +1,60 @@
+CREW_SOOM/
+├── data/                          # 데이터 저장소
+│   ├── asos_seoul_daily.csv          # 원본 일별 기상 데이터
+│   ├── asos_seoul_daily_enriched.csv # 전처리된 일별 데이터 (AI 훈련용)
+│   ├── asos_seoul_hourly.csv         # 원본 시간별 기상 데이터
+│   └── asos_seoul_hourly_with_flood_risk.csv # 침수 위험도가 추가된 시간별 데이터
+│
+├── models/                        # 훈련된 AI 모델 저장소
+│   ├── randomforest_enriched_model.pkl    # Random Forest 모델
+│   ├── xgb_model_daily.pkl               # XGBoost 모델
+│   ├── xgb_scaler_daily.pkl              # XGBoost 전처리 스케일러
+│   ├── lstm_cnn_model.h5                 # LSTM+CNN 딥러닝 모델
+│   ├── lstm_cnn_scaler.pkl               # LSTM+CNN 전처리 스케일러
+│   └── transformer_flood_model.h5        # Transformer 딥러닝 모델
+│
+├── modules/                       # 핵심 파이썬 모듈
+│   ├── preprocessor.py               # 데이터 전처리 모듈
+│   ├── trainer.py                    # 기본 훈련 모듈
+│   ├── trainer_rf.py                 # Random Forest 훈련
+│   ├── trainer_xgb.py                # XGBoost 훈련
+│   ├── trainer_lstm_cnn.py           # LSTM+CNN 훈련
+│   ├── trainer_transformer.py        # Transformer 훈련
+│   ├── enhanced_user_model.py        # 실제 침수 사례 기반 예측 모델
+│   ├── visualizer.py                 # 데이터 시각화 모듈
+│   └── web_app.py                    # Flask 웹 애플리케이션
+│
+├── templates/                     # HTML 템플릿
+│   ├── dashboard.html                # 메인 대시보드
+│   ├── login.html                    # 로그인 페이지
+│   ├── map.html                      # 실시간 지도
+│   ├── user_model.html               # AI 모델 선택 예측 페이지
+│   ├── models.html                   # 모델 비교 페이지
+│   ├── news.html                     # 뉴스 페이지
+│   ├── logs.html                     # 시스템 로그
+│   └── register.html                 # 회원가입 페이지
+│
+├── static/                        # 정적 파일 (CSS, JS, 이미지)
+│   ├── css/                          # 스타일시트
+│   ├── js/                           # 자바스크립트
+│   └── images/                       # 이미지 파일
+│
+├── outputs/                       # AI 모델 평가 결과
+│   ├── model_comparison_metrics.png  # 모델 성능 비교 차트
+│   ├── randomforest_eval_plots.png   # Random Forest 평가 차트
+│   ├── xgb_*.png                     # XGBoost 평가 차트들
+│   ├── lstm_cnn_*.png                # LSTM+CNN 평가 차트들
+│   └── transformer_*.png             # Transformer 평가 차트들
+│
+├── soom1/                         # Python 가상환경
+│   ├── Scripts/                      # 실행 파일
+│   ├── Lib/                          # 라이브러리
+│   └── Include/                      # 헤더 파일
+│
+├── run.py                         # 애플리케이션 실행 파일
+├── setup.py                       # 프로젝트 설정
+├── requirements.txt               # 의존성 패키지 목록
+├── readme.md                      # 프로젝트 설명서
+├── .env                           # 환경 변수 설정
+├── .gitignore                     # Git 무시 파일 목록
+└── 설계구조도.txt                 
